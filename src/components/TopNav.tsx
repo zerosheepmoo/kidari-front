@@ -25,7 +25,7 @@ const TopNav = () => {
       alignSelf={"center"}
       height={80}
     >
-      <Box color="white">
+      <Box color="white" component={Link} href={"/home"}>
         <img
           src={"public/images/kidari_b.webp"}
           style={{

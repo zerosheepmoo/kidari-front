@@ -13,10 +13,11 @@ import AOS from "aos";
 import { useAtom } from "jotai";
 import { userAtom } from "../jotais";
 import TopNav from "../components/TopNav";
-import { getEvents } from "../apis/event";
+import { getAllEvents, getEvents } from "../apis/event";
 import { Event } from "../interfaces/event-api";
 import { fetchMe } from "../apis/user";
 import EventModal from "../components/EventModal";
+import AnimatedNumbers from "react-animated-numbers";
 
 const mobileWidth = 700;
 const nineHundWidth = 900;
@@ -63,7 +64,7 @@ const Home = () => {
   useEffect(() => {
     (async () => {
       try {
-        const getEvent = await getEvents();
+        const getEvent = await getAllEvents();
         console.log(getEvent);
         setEvents(getEvent);
       } catch (e) {
@@ -95,6 +96,7 @@ const Home = () => {
         height: "100%",
         flexDirection: "column",
         overFlowY: "scroll",
+        overflowX: "hidden",
       }}
     >
       <EventModal
@@ -116,27 +118,105 @@ const Home = () => {
           display={"flex"}
           height={450}
           width={"100%"}
-          mt={4}
+          mt={3}
           flexDirection={"column"}
-          sx={{ backgroundColor: "black" }}
-        ></Box>
+          position={"relative"}
+          sx={{ backgroundColor: "white" }}
+          borderRadius={"1rem"}
+          justifyContent={"flex-end"}
+        >
+          <img
+            src={"/images/coffee.webp"}
+            style={{
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              opacity: 1,
+            }}
+          />
+          <Typography
+            color={"black"}
+            component="div"
+            sx={{
+              display: "flex",
+              justifyContent: "flex-start",
+              whiteSpace: "nowrap",
+              fontSize: 45,
+              fontWeight: 300,
+              color: "white",
+              zIndex: 999,
+              pl: 3,
+            }}
+          >
+            Accumulated Amount: &nbsp;
+            <AnimatedNumbers
+              animateToNumber={21}
+              configs={[
+                { mass: 1, tension: 220, friction: 100 },
+                { mass: 1, tension: 180, friction: 130 },
+                { mass: 1, tension: 280, friction: 90 },
+                { mass: 1, tension: 180, friction: 135 },
+                { mass: 1, tension: 260, friction: 100 },
+                { mass: 1, tension: 210, friction: 180 },
+              ]}
+            />
+            Million
+          </Typography>
+          <Typography
+            color={"black"}
+            component="div"
+            sx={{
+              display: "flex",
+              justifyContent: "flex-start",
+              whiteSpace: "nowrap",
+              fontSize: 30,
+              fontWeight: 300,
+              color: "white",
+              zIndex: 999,
+              pl: 3,
+              pb: 3,
+            }}
+          >
+            Accumulated Givers: &nbsp;
+            <AnimatedNumbers
+              animateToNumber={31}
+              configs={[
+                { mass: 1, tension: 220, friction: 100 },
+                { mass: 1, tension: 180, friction: 130 },
+                { mass: 1, tension: 280, friction: 90 },
+                { mass: 1, tension: 180, friction: 135 },
+                { mass: 1, tension: 260, friction: 100 },
+                { mass: 1, tension: 210, friction: 180 },
+              ]}
+            />
+            K
+          </Typography>
+          {/* <Box sx={{ position: "absolute", right: 0 }}>
+            <img
+              src={"public/images/kidari_man-removebg-preview.png"}
+              height={400}
+            />
+          </Box> */}
+        </Box>
         <Box
           display={"flex"}
-          height={450}
+          height={1000}
           width={"100%"}
           mt={4}
           flexDirection={"column"}
-          sx={{ overFlowX: "100%" }}
+
           // sx={{ backgroundColor: "black" }}
         >
           <Box display={"flex"} width={"100%"}>
             <Typography display={"flex"} fontWeight={400} fontSize={30}>
-              Best Reviews
+              Holding Events
             </Typography>
           </Box>
           <Box
             display={"flex"}
             width={"100%"}
+            flexWrap={"wrap"}
             mt={4}
             sx={{ overFlowX: "100%" }}
           >
