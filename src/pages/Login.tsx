@@ -11,7 +11,13 @@ const Login = () => {
   const [createAccount, setCreateAccount] = useState(false);
 
   const handleLogin = async () => {
-    // const user = await userSignIn({ email: email, password: password });
+    if (!(email && password)) return;
+    const user = await userSignIn({ email: email, password: password });
+    if (user) {
+      console.log("logged in!");
+    } else {
+      console.log("something went wrong");
+    }
   };
 
   return (
