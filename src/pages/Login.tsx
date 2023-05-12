@@ -164,9 +164,14 @@ const Login = () => {
                   display={"flex"}
                   sx={{ width: "100%", p: 2 }}
                   justifyContent={"center"}
-                  onClick={() => setShowModal(true)}
                 >
-                  <Typography>Create new account</Typography>
+                  <Typography sx={{ pr: 1 }}>Are you new ?</Typography>
+                  <Typography
+                    sx={{ textDecoration: "underline" }}
+                    onClick={() => setShowModal(true)}
+                  >
+                    Create new account
+                  </Typography>
                 </Box>
               </Box>
             </Box>

@@ -1,10 +1,29 @@
 import apiInstance from "./base";
 import { getHeaderOption, setATToLocalStorage } from "../utils/network";
-import { RequestPostSignInUser, User } from "../interfaces/user-api";
+import {
+  RequestPostSignInUser,
+  RequestPostSignUpUser,
+  User,
+} from "../interfaces/user-api";
 
 export const userSignIn = async (data: RequestPostSignInUser) => {
   const query = `v1/user/login`;
-  const body = await apiInstance.post(query, { json: data }).json<User>();
+  const ho = getHeaderOption();
+  if (!ho) return;
+  const body = await apiInstance
+    .post(query, { json: data, ...ho })
+    .json<User>();
+  setATToLocalStorage(body);
+  return body;
+};
+
+export const userSignUp = async (data: RequestPostSignUpUser) => {
+  const query = `v1/user/signup`;
+  const ho = getHeaderOption();
+  if (!ho) return;
+  const body = await apiInstance
+    .post(query, { json: data, ...ho })
+    .json<User>();
   setATToLocalStorage(body);
   return body;
 };
