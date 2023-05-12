@@ -37,7 +37,7 @@ enum FontWeightValues {
   EXTAR_BLACK = 950,
 }
 
-const ServiceIntroduction = () => {
+const Home = () => {
   const [showBottomButton, setShowBottomButton] = useState(false);
   const [searchParams, _setSearchParams] = useSearchParams();
 
@@ -61,111 +61,9 @@ const ServiceIntroduction = () => {
 
   return (
     <Box position={"relative"} sx={{ overflowX: "hidden" }}>
-      <Box position={"relative"}>
-        <Box
-          sx={{
-            width: "100vw",
-            height: "100vh",
-            bgcolor: "#111",
-          }}
-        >
-          <img
-            src={"public/images/baking.webp"}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              opacity: 0.3,
-            }}
-          />
-        </Box>
-        <Box
-          sx={{
-            position: "absolute",
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Fade in timeout={1000}>
-            <Typography
-              sx={{
-                textAlign: "center",
-                color: "#FFF",
-                fontFamily:"SweetRomance",
-                fontSize:220
-              }}
-            >
-              {"Kidari"}
-            </Typography>
-          </Fade>
-          <Fade in timeout={2000}>
-            <Typography
-              sx={{
-                textAlign: "center",
-                color: "#FFF",
-                fontSize:23,
-                pt:3
-                
-              }}
-            >
-              {"Ask for help, because together we can"}
-            </Typography>
-          </Fade>
-          <Fade in timeout={1000} style={{ transitionDelay: "500ms" }}>
-            <Button
-              variant="contained"
-              sx={{ width: "fit-content", p: 3, mt: 7 }}
-              href={"/login"}
-            >
-              <Typography variant="f18B">Apply / Agent Here</Typography>
-            </Button>
-          </Fade>
-        </Box>
-        <Box
-          sx={{
-            position: "absolute",
-            bottom: 100,
-            left: 0,
-            right: 0,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Typography variant="f14B" color={"#FFF"}>
-            See more
-          </Typography>
-          <KeyboardDoubleArrowDown
-            htmlColor="#FFF"
-            sx={{
-              animation: "bounce 3s infinite",
-              MozAnimation: "bounce 3s infinite",
-              WebkitAnimation: "bounce 3s infinite",
-              "@keyframes bounce": {
-                "0%, 10%, 30%, 50%, 100%": {
-                  transform: "translateY(0)",
-                },
-                "20%": {
-                  transform: "translateY(5px)",
-                },
-                "40%": {
-                  transform: "translateY(3px)",
-                  opacity: 0.5,
-                },
-              },
-            }}
-          />
-        </Box>
-      </Box>
+      
     </Box>
   );
 };
 
-export default ServiceIntroduction;
+export default Home;

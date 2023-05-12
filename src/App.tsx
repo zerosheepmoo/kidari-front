@@ -12,13 +12,15 @@ import theme from "./theme";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
+import Landing from "./pages/Landing";
 
 const App = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/">
-        <Route index element={<Home />} />
+        <Route index element={<Landing />} />
         <Route path="login" element={<Login />} />
+        <Route path="home" element={<Home />} />
         <Route path="signup" element={<SignUp />} />
       </Route>
     )
