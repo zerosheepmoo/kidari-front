@@ -28,4 +28,5 @@ export interface RequestPatchEventComment {
  */
 export interface EventCommentDoc extends EventCommentBase {
   userOID: string;
+  eventOID: string;
 }
