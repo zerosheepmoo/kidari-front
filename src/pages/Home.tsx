@@ -1,8 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ArrowForward, KeyboardDoubleArrowDown } from "@mui/icons-material";
+import {
+  Add,
+  AddIcCallOutlined,
+  ArrowForward,
+  KeyboardDoubleArrowDown,
+} from "@mui/icons-material";
 import {
   Box,
   Button,
+  Fab,
   Fade,
   Grid,
   Slide,
@@ -18,6 +24,7 @@ import { Event } from "../interfaces/event-api";
 import { fetchMe } from "../apis/user";
 import EventModal from "../components/EventModal";
 import AnimatedNumbers from "react-animated-numbers";
+import CreateEventModal from "../components/CreateEventModal";
 
 const mobileWidth = 700;
 const nineHundWidth = 900;
@@ -59,6 +66,7 @@ const Home = () => {
   const [user, setUser] = useAtom(userAtom);
 
   const [showEventModal, setShowEventModal] = useState(false);
+  const [showCreateEventModal, setCreateEventModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<Event | undefined>();
 
   useEffect(() => {
@@ -103,6 +111,10 @@ const Home = () => {
         onClose={() => setShowEventModal(false)}
         open={showEventModal}
         event={selectedEvent ?? undefined}
+      />
+      <CreateEventModal
+        onClose={() => setCreateEventModal(false)}
+        open={showCreateEventModal}
       />
       <Grid
         item
@@ -201,7 +213,7 @@ const Home = () => {
         </Box>
         <Box
           display={"flex"}
-          height={1000}
+          height={"auto"}
           width={"100%"}
           mt={4}
           flexDirection={"column"}
@@ -299,12 +311,104 @@ const Home = () => {
             )}
           </Box>
         </Box>
-        <Box display={"flex"} height={2000} width={"100%"}>
+        <Box display={"flex"} height={"auto"} width={"100%"}>
           <Typography fontWeight={400} fontSize={30}>
-            Story
+            Held Events
           </Typography>
         </Box>
+        <Box
+          display={"flex"}
+          width={"100%"}
+          flexWrap={"wrap"}
+          mt={4}
+          sx={{ overFlowX: "100%" }}
+        >
+          {events ? (
+            events.map((e, idx) => {
+              return (
+                <Box
+                  display={"flex"}
+                  height={400}
+                  width={250}
+                  flexDirection={"column"}
+                  key={`event_${idx}`}
+                  mr={2}
+                  onClick={() => {
+                    setShowEventModal(true);
+                    setSelectedEvent(e);
+                  }}
+                >
+                  <Box
+                    display={"flex"}
+                    height={200}
+                    width={"100%"}
+                    sx={{
+                      borderRadius: "5px 5px 0 0 ",
+                      border: "solid 1px #E5E8EB",
+                      borderBottom: 0,
+                    }}
+                  >
+                    <img
+                      width={"100%"}
+                      src={
+                        e.thumbnail ? e.thumbnail : "public/images/baking.webp"
+                      }
+                      style={{
+                        borderRadius: "5px 5px 0 0",
+                        objectFit: "cover",
+                      }}
+                    />
+                  </Box>
+                  <Box
+                    display={"flex"}
+                    height={130}
+                    width={"100%"}
+                    sx={{
+                      borderRadius: "0 0 5px 5px",
+                      border: "solid 1px #E5E8EB",
+                      borderTop: "",
+                      flexDirection: "column",
+                      p: 2,
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Typography display={"flex"}>{e.deadline}</Typography>
+                    <Typography
+                      display={"flex"}
+                      sx={{
+                        fontSize: 23,
+                        fontWeight: 600,
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        maxWidth: "100%",
+                      }}
+                    >
+                      {e.title}
+                    </Typography>
+                    <Box display={"flex"} justifyContent={"flex-end"}>
+                      <Typography display={"flex"} fontSize={13}>
+                        ~ {e.deadline}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Box>
+              );
+            })
+          ) : (
+            <></>
+          )}
+        </Box>
       </Grid>
+      <Box sx={{ position: "fixed", right: 40, bottom: 40 }}>
+        <Fab
+          color="primary"
+          aria-label="add"
+          onClick={() => setCreateEventModal(true)}
+        >
+          <Add />
+        </Fab>
+      </Box>
     </Grid>
   );
 };

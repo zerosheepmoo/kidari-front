@@ -15,6 +15,7 @@ import Login from "./pages/Login";
 import Landing from "./pages/Landing";
 import Profile from "./pages/Profile";
 import About from "./pages/About";
+import { Toaster } from "react-hot-toast";
 
 const EmptyLayout = () => {
   return <Outlet />;
@@ -34,6 +35,11 @@ const App = () => {
   );
   return (
     <ThemeProvider theme={theme}>
+      <Toaster
+        containerStyle={{ zIndex: 10001 }}
+        position="top-center"
+        reverseOrder={false}
+      />
       <CssBaseline />
       <RouterProvider router={router} />
     </ThemeProvider>

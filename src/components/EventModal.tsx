@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Grid,
   MenuItem,
   Select,
   TextField,
@@ -12,6 +13,7 @@ import { UserType } from "../consts/user-const";
 import { userSignUp } from "../apis/user";
 import { useNavigate } from "react-router-dom";
 import { Event } from "../interfaces/event-api";
+import { toast } from "react-hot-toast";
 
 export interface EventModalProps {
   open: boolean;
@@ -28,6 +30,11 @@ const EventModal: React.FC<EventModalProps> = ({
 }) => {
   const navi = useNavigate();
 
+  const handleRequest = () => {
+    toast.success("You have sucessfully requested");
+    onClose();
+  };
+
   return (
     <BasicModal
       open={open}
@@ -37,7 +44,7 @@ const EventModal: React.FC<EventModalProps> = ({
     >
       <Box
         display={"flex"}
-        height={200}
+        height={500}
         width={"100%"}
         sx={{
           borderRadius: "5px 5px 0 0 ",
@@ -47,12 +54,121 @@ const EventModal: React.FC<EventModalProps> = ({
       >
         <img
           width={"100%"}
+          height={"100%"}
           src={event ? event.thumbnail : "public/images/baking.webp"}
           style={{
             borderRadius: "5px 5px 0 0",
             objectFit: "cover",
           }}
         />
+      </Box>
+      <Box display={"flex"} pt={5}>
+        {event ? event.content : ""}
+      </Box>
+      <Box
+        display={"flex"}
+        fontWeight={800}
+        mt={1}
+        flexDirection={"row"}
+        justifyContent={"space-between"}
+      >
+        <Typography fontWeight={700}>
+          Deadline : {event ? event.holdingDate : ""}
+        </Typography>
+        <Typography fontSize={20} fontWeight={800} color={"#7149C6"}>
+          {" "}
+          20,000 Won
+        </Typography>
+      </Box>
+      <Grid
+        display={"flex"}
+        width={"100%"}
+        height={100}
+        sx={{ flexDirection: "row" }}
+        justifyContent={"center"}
+        alignItems={"center"}
+        mt={2}
+      >
+        <Box
+          display={"flex"}
+          height={"100%"}
+          alignItems={"center"}
+          justifyContent={"space-between"}
+          width={"100%"}
+          border={"solid 1px #E5E8EB"}
+          borderRadius={"1rem"}
+          flexDirection={"row"}
+          p={5}
+        >
+          <Box display={"flex"}>
+            <Box
+              display={"flex"}
+              sx={{
+                border: "solid 1px #A9A9A9",
+                borderRadius: "5rem",
+                justifyContent: "center",
+                alignItems: "center",
+                p: 2,
+              }}
+            >
+              <img
+                src={
+                  event
+                    ? "public/icons/profile_d.png"
+                    : "public/icons/profile_d.png"
+                }
+                style={{ width: 30, height: 30 }}
+              />
+            </Box>
+          </Box>
+          <Box display={"flex"} flexDirection={"column"} pl={5}>
+            <Box
+              display={"flex"}
+              color="black"
+              height={"100%"}
+              sx={{ alignItems: "flex-end", justifyContent: "flex-start" }}
+            >
+              <Typography fontSize={20} color={"black"}>
+                Registered {event ? event.registeredPeopleNumber : ""}
+              </Typography>
+            </Box>
+            <Box
+              display={"flex"}
+              color="black"
+              height={"100%"}
+              sx={{
+                alignItems: "flex-start",
+                justifyContent: "flex-start",
+              }}
+            >
+              <Typography fontSize={25} color={"black"} fontWeight={800}>
+                Pending {event ? event.process : ""}
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+      </Grid>
+      <Box display={"flex"}>
+        <Typography fontWeight={700} pt={2}>
+          Reviews
+        </Typography>
+      </Box>
+      <Box display={"flex"} sx={{ width: "100%" }} justifyContent={"center"}>
+        <Button
+          sx={{
+            height: 50,
+            backgroundColor: "#7149C6",
+            width: "100%",
+            color: "white",
+            mt: 4,
+            "&:hover": {
+              backgroundColor: "#7149C6",
+            },
+          }}
+          onClick={() => handleRequest()}
+        >
+          Request to participate
+        </Button>
       </Box>
     </BasicModal>
   );

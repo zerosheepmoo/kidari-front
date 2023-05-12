@@ -28,7 +28,6 @@ const BasicModal: React.FC<BasicModalProps & DialogProps> = ({
 }) => {
   return (
     <Dialog
-      maxWidth={"xs"}
       {...dialogProps}
       open={open}
       onClose={onClose}
@@ -39,7 +38,7 @@ const BasicModal: React.FC<BasicModalProps & DialogProps> = ({
         sx: {
           width: "100%",
           height: "auto",
-          maxHeight: "800px",
+          maxHeight: "900px",
           borderRadius: "20px",
           p: p,
           ...dialogProps.PaperProps?.sx,

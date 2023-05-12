@@ -182,7 +182,7 @@ const Profile = () => {
             borderRadius={"1rem"}
           >
             <Typography display={"flex"} fontSize={23} fontWeight={700}>
-              Requested Experience
+              Requested Events
             </Typography>
             <Typography
               color={"#7149C6"}
@@ -197,13 +197,13 @@ const Profile = () => {
         <Grid display={"flex"} width={"70vw"} mt={10} justifyContent={"center"}>
           <Box
             display={"flex"}
-            height={400}
+            height={"auto"}
             alignItems={"center"}
             width={"70%"}
             borderRadius={"1rem"}
           >
             <Typography display={"flex"} fontSize={23} fontWeight={700}>
-              Requested Experience
+              Participated Events
             </Typography>
           </Box>
         </Grid>

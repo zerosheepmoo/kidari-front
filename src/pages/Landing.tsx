@@ -60,7 +60,10 @@ const Landing = () => {
   }, []);
 
   return (
-    <Box position={"relative"} sx={{ overflowX: "hidden" }}>
+    <Box
+      position={"relative"}
+      sx={{ overflowX: "hidden", overflowY: "hidden" }}
+    >
       <Box position={"relative"}>
         <Box
           sx={{
@@ -120,45 +123,9 @@ const Landing = () => {
               sx={{ width: "fit-content", p: 3, mt: 7 }}
               href={"/login"}
             >
-              <Typography variant="f18B">Apply / Agent Here</Typography>
+              <Typography variant="f18B">Request & Support Here</Typography>
             </Button>
           </Fade>
-        </Box>
-        <Box
-          sx={{
-            position: "absolute",
-            bottom: 100,
-            left: 0,
-            right: 0,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Typography variant="f14B" color={"#FFF"}>
-            See more
-          </Typography>
-          <KeyboardDoubleArrowDown
-            htmlColor="#FFF"
-            sx={{
-              animation: "bounce 3s infinite",
-              MozAnimation: "bounce 3s infinite",
-              WebkitAnimation: "bounce 3s infinite",
-              "@keyframes bounce": {
-                "0%, 10%, 30%, 50%, 100%": {
-                  transform: "translateY(0)",
-                },
-                "20%": {
-                  transform: "translateY(5px)",
-                },
-                "40%": {
-                  transform: "translateY(3px)",
-                  opacity: 0.5,
-                },
-              },
-            }}
-          />
         </Box>
       </Box>
     </Box>

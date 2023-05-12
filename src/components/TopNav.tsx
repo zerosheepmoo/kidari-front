@@ -9,7 +9,7 @@ const TopNav = () => {
   const nav = [
     { label: "Home", link: "/home" },
     { label: "About", link: "/about" },
-    { label: "Contact", link: "/contact" },
+    // { label: "Contact", link: "/contact" },
     { label: "Login", link: "/login" },
   ];
 
@@ -38,18 +38,18 @@ const TopNav = () => {
           return (
             <Box
               component={Link}
-              href={user && idx !== 3 ? e.link : "/profile"}
+              href={user && idx !== 2 ? e.link : "/profile"}
               mx={2}
               fontSize="subtitle1.fontSize"
               key={`nav_${idx}`}
               sx={{
                 textDecoration: "none",
                 color: "black",
-                borderBottom:
-                  currentIdx === idx && idx !== 3 ? "solid 2px" : "none",
+                // borderBottom:
+                //   currentIdx === idx && idx !== 3 ? "solid 2px" : "none",
               }}
             >
-              {user && idx === 3 ? (
+              {user && idx === 2 ? (
                 <Box
                   display={"flex"}
                   sx={{
