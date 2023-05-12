@@ -8,7 +8,6 @@ import {
 
 export const userSignIn = async (data: RequestPostSignInUser) => {
   const query = `v1/user/login`;
-
   const body = await apiInstance.post(query, { json: data }).json<User>();
   setATToLocalStorage(body);
   return body;

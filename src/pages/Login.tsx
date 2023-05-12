@@ -39,13 +39,15 @@ const Login = () => {
   const handleLogin = async () => {
     console.log("login", email, password);
     if (!(email && password)) return;
-    const user = await userSignIn({ email: email, password: password });
-    if (user) {
-      console.log("logged in!");
-      setUser(user);
-      navi("/home");
-    } else {
-      console.log("something went wrong");
+    try {
+      const user = await userSignIn({ email: email, password: password });
+      if (user) {
+        console.log("logged in!");
+        setUser(user);
+        navi("/home");
+      }
+    } catch (e) {
+      console.log(e);
       setError("Invalid Login");
     }
   };

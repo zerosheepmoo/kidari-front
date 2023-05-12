@@ -14,6 +14,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Landing from "./pages/Landing";
 import Profile from "./pages/Profile";
+import About from "./pages/About";
 
 const EmptyLayout = () => {
   return <Outlet />;
@@ -27,6 +28,7 @@ const App = () => {
         <Route path="login" element={<Login />} />
         <Route path="home" element={<Home />} />
         <Route path="profile" element={<Profile />} />
+        <Route path="about" element={<About />} />
       </Route>
     )
   );
