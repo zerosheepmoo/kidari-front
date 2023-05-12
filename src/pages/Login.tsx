@@ -34,7 +34,7 @@ const Login = () => {
         >
           <Box color="white">
             <img
-              src={"public/images/kidari_b.png"}
+              src={"public/images/kidari_b.webp"}
               style={{
                 height: 40,
               }}
@@ -118,7 +118,7 @@ const Login = () => {
                 pb={9}
               >
                 <img
-                  src={"public/images/kidari_b.png"}
+                  src={"public/images/kidari_b.webp"}
                   style={{
                     height: 100,
                   }}

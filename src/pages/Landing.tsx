@@ -92,26 +92,22 @@ const Landing = () => {
             alignItems: "center",
           }}
         >
-          <Fade in timeout={1000}>
-            <Typography
-              sx={{
-                textAlign: "center",
-                color: "#FFF",
-                fontFamily:"SweetRomance",
-                fontSize:220
-              }}
-            >
-              {"Kidari"}
-            </Typography>
-          </Fade>
           <Fade in timeout={2000}>
+            <img
+              src={"public/images/Kidari_w.webp"}
+              style={{
+                height: 300,
+                objectFit: "cover",
+              }}
+            />
+          </Fade>
+          <Fade in timeout={3000}>
             <Typography
               sx={{
                 textAlign: "center",
                 color: "#FFF",
-                fontSize:23,
-                pt:3
-                
+                fontSize: 23,
+                pt: 3,
               }}
             >
               {"Ask for help, because together we can"}
