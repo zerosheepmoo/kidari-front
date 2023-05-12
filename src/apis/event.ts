@@ -9,11 +9,18 @@ import {
 import { EventProcess } from "../consts/event-const";
 
 /**
- * // NOTE if the process set, then it will be for the GIVER
- * becuase takers always can check wip process or doned (not passed deadline one)
+ * NOTE do filter in front plz
  */
-export const getEvents = async (process?: EventProcess) => {
-  const query = `v1/events${process ? `process=${process}` : ""}`;
+export const getAllEvents = async () => {
+  const query = `v1/events`;
+  const body = await apiInstance.get(query).json<Event[]>();
+  return body;
+};
+/**
+ * NOTE do filter in front plz
+ */
+export const getEvents = async (userOID: string) => {
+  const query = `v1/events/${userOID}`;
   const body = await apiInstance.get(query).json<Event[]>();
   return body;
 };
@@ -38,6 +45,17 @@ export const patchEventDraft = async (
   if (!ho) return; // case that access token removed
   const body = await apiInstance
     .patch(query, { ...ho, json: patching })
+    .json<Event>();
+  setATToLocalStorage(body);
+  return body;
+};
+
+export const publishEvent = async (eventOID: string) => {
+  const query = `v1/events/${eventOID}?process=${EventProcess.DRAFT}`;
+  const ho = getHeaderOption();
+  if (!ho) return; // case that access token removed
+  const body = await apiInstance
+    .patch(query, { ...ho, json: { process: EventProcess.WIP } })
     .json<Event>();
   setATToLocalStorage(body);
   return body;
