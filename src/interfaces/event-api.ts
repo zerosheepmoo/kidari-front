@@ -19,11 +19,6 @@ export interface EventBase {
    */
   holdingDate: string;
 
-  /**
-   * AI trained value
-   */
-  rating: number;
-
   process: EventProcess;
   registeredPeopleNumber: number;
   feeForPerson: number;

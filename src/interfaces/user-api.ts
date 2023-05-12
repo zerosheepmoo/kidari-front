@@ -26,6 +26,10 @@ export interface UserBase {
   introduction: string;
 
   account: string;
+  /**
+   * AI trained value
+   */
+  rating?: number;
 }
 
 export interface User extends MongoIDIncluding, UserBase, ResponseUserHasAT {}
