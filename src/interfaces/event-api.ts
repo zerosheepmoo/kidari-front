@@ -1,5 +1,4 @@
 import { EventProcess } from "../consts/event-const";
-import { UserType } from "../consts/user-const";
 import { MongoIDIncluding } from "./common-api";
 import { ResponseUserHasAT } from "./user-api";
 
@@ -27,6 +26,7 @@ export interface EventBase {
 
   process: EventProcess;
   registeredPeopleNumber: number;
+  feeForPerson: number;
 }
 
 export interface Event extends MongoIDIncluding, EventBase, ResponseUserHasAT {
