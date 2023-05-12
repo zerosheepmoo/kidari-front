@@ -30,6 +30,10 @@ export interface UserBase {
    * AI trained value
    */
   rating?: number;
+  /**
+   * profile image s3 address
+   */
+  profile?: string;
 }
 
 export interface User extends MongoIDIncluding, UserBase, ResponseUserHasAT {}
@@ -47,6 +51,14 @@ export interface RequestPostSignUpUser {
 
   account?: string;
   introduction?: string;
+}
+
+export interface RequestPatchMe {
+  name?: string;
+  account?: string;
+  introduction?: string;
+  phone?: string;
+  profile?: string;
 }
 
 /**

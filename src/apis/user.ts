@@ -1,6 +1,7 @@
 import apiInstance from "./base";
 import { getHeaderOption, setATToLocalStorage } from "../utils/network";
 import {
+  RequestPatchMe,
   RequestPostSignInUser,
   RequestPostSignUpUser,
   User,
@@ -27,6 +28,18 @@ export const userSignOut = async () => {
   await apiInstance.post(query, ho).json();
   localStorage.setItem("acc", "");
   return;
+};
+
+export const patchMe = async (updating: RequestPatchMe) => {
+  const query = `v1/user/me`;
+  const ho = getHeaderOption();
+  if (!ho) return;
+  const body = await apiInstance
+    .patch(query, { ...ho, json: updating })
+    .json<User>();
+  setATToLocalStorage(body);
+
+  return body;
 };
 
 export const fetchMe = async () => {
