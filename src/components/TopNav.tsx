@@ -1,7 +1,10 @@
 import { Box, Grid, Link } from "@mui/material";
+import { useAtom } from "jotai";
 import React from "react";
+import { currentTabAtom } from "../jotais";
 
 const TopNav = () => {
+  const [currentIdx, setCurrentIdx] = useAtom(currentTabAtom);
   const nav = [
     { label: "Home", link: "/home" },
     { label: "About", link: "/about" },
@@ -36,7 +39,11 @@ const TopNav = () => {
               mx={2}
               fontSize="subtitle1.fontSize"
               key={`nav_${idx}`}
-              sx={{ textDecoration: "none", color: "black" }}
+              sx={{
+                textDecoration: "none",
+                color: "black",
+                borderBottom: currentIdx === idx ? "solid 2px" : "none",
+              }}
             >
               {e.label}
             </Box>

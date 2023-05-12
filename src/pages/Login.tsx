@@ -3,12 +3,18 @@ import { KeyboardDoubleArrowDown } from "@mui/icons-material";
 import { Box, Button, Fade, Grid, TextField, Typography } from "@mui/material";
 import TopNav from "../components/TopNav";
 import { userSignIn } from "../apis/user";
+import { userAtom } from "../jotais";
+import { useSetAtom } from "jotai";
+import CreateAccountModal from "../components/CreateAccountModal";
 
 const Login = () => {
+  //  user
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
-  const [createAccount, setCreateAccount] = useState(false);
+  // modal
+  const [showModal, setShowModal] = useState(false);
+  const setUser = useSetAtom(userAtom);
 
   const handleLogin = async () => {
     if (!(email && password)) return;
@@ -30,6 +36,10 @@ const Login = () => {
         flexDirection: "column",
       }}
     >
+      <CreateAccountModal
+        open={showModal}
+        onClose={() => setShowModal(false)}
+      />
       <Grid
         item
         display={"flex"}
@@ -149,6 +159,14 @@ const Login = () => {
                   >
                     Login
                   </Button>
+                </Box>
+                <Box
+                  display={"flex"}
+                  sx={{ width: "100%", p: 2 }}
+                  justifyContent={"center"}
+                  onClick={() => setShowModal(true)}
+                >
+                  <Typography>Create new account</Typography>
                 </Box>
               </Box>
             </Box>
