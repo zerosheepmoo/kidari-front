@@ -1,10 +1,7 @@
 import { EventProcess } from "../consts/event-const";
 import { UserType } from "../consts/user-const";
 import { MongoIDIncluding } from "./common-api";
-
-export interface ResponseUserHasAT {
-  acc?: string;
-}
+import { ResponseUserHasAT } from "./user-api";
 
 export interface EventBase {
   title: string;
@@ -32,7 +29,7 @@ export interface EventBase {
   registeredPeopleNumber: number;
 }
 
-export interface Event extends MongoIDIncluding, EventBase {
+export interface Event extends MongoIDIncluding, EventBase, ResponseUserHasAT {
   userOID: string;
 }
 
@@ -68,14 +65,6 @@ export interface RequestEditEvent {
   title?: string;
   thumbnail?: string;
   content?: string;
-}
-
-export interface RequestPostSignUpUser {
-  name: string;
-  type: UserType;
-  email: string;
-  password: string;
-  phone?: string;
 }
 
 /**

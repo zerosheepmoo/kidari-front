@@ -1,4 +1,5 @@
 import { MongoIDIncluding } from "./common-api";
+import { ResponseUserHasAT } from "./user-api";
 
 export interface EventCommentBase {
   name: string;
@@ -8,8 +9,18 @@ export interface EventCommentBase {
   content: string;
 }
 
-export interface EventComment extends MongoIDIncluding, EventCommentBase {
+export interface EventComment
+  extends MongoIDIncluding,
+    EventCommentBase,
+    ResponseUserHasAT {
   userOID: string;
+}
+
+export interface RequestPostEventComment {
+  content: string;
+}
+export interface RequestPatchEventComment {
+  content: string;
 }
 
 /**

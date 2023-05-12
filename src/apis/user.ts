@@ -9,7 +9,7 @@ export const userSignIn = async (data: RequestPostSignInUser) => {
   return body;
 };
 
-export const UserSignOut = async () => {
+export const userSignOut = async () => {
   const query = `v1/user/logout`;
   const ho = getHeaderOption();
   if (!ho) return;
