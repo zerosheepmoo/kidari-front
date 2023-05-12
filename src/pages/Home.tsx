@@ -15,6 +15,7 @@ import LogoSlide from "../components/LogoSlide";
 
 import { useScroll, animated } from "@react-spring/web";
 import { useSearchParams } from "react-router-dom";
+import TopNav from "../components/TopNav";
 
 const mobileWidth = 700;
 const nineHundWidth = 900;
@@ -38,31 +39,46 @@ enum FontWeightValues {
 }
 
 const Home = () => {
-  const [showBottomButton, setShowBottomButton] = useState(false);
-  const [searchParams, _setSearchParams] = useSearchParams();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 72) {
-        setShowBottomButton(true);
-      } else {
-        setShowBottomButton(false);
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
   useEffect(() => {
     AOS.init();
   }, []);
 
   return (
-    <Box position={"relative"} sx={{ overflowX: "hidden" }}>
-      
-    </Box>
+    <Grid
+      container
+      sx={{
+        width: "100vw",
+        height: "100vh",
+        flexDirection: "column",
+      }}
+    >
+      <Grid
+        item
+        display={"flex"}
+        width={"70vw"}
+        alignSelf={"center"}
+        justifyContent={"flex-start"}
+        flexDirection={"column"}
+        height={"100%"}
+      >
+        <TopNav />
+        <Box
+          display={"flex"}
+          height={"30%"}
+          width={"100%"}
+          sx={{ backgroundColor: "black" }}
+        ></Box>
+        <Box
+          display={"flex"}
+          height={"70%"}
+          width={"100%"}
+          sx={{ backgroundColor: "grey" }}
+        >
+          {}
+
+        </Box>
+      </Grid>
+    </Grid>
   );
 };
 

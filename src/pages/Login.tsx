@@ -1,8 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { KeyboardDoubleArrowDown } from "@mui/icons-material";
 import { Box, Button, Fade, Grid, TextField, Typography } from "@mui/material";
+import TopNav from "../components/TopNav";
+import { userSignIn } from "../apis/user";
 
 const Login = () => {
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+
+  const [createAccount, setCreateAccount] = useState(false);
+
+  const handleLogin = async () => {
+    // const user = await userSignIn({ email: email, password: password });
+  };
+
   return (
     <Grid
       container
@@ -23,42 +34,6 @@ const Login = () => {
         height={"100%"}
       >
         {/* Top Nav */}
-        <Grid
-          item
-          display={"flex"}
-          justifyContent="space-between"
-          p={2}
-          width={"100%"}
-          alignSelf={"center"}
-          height={80}
-        >
-          <Box color="white">
-            <img
-              src={"public/images/kidari_b.webp"}
-              style={{
-                height: 40,
-              }}
-            />
-          </Box>
-          <Box display="flex" alignItems="center">
-            <Box mx={2} fontSize="subtitle1.fontSize">
-              Home
-            </Box>
-            <Box mx={2} fontSize="subtitle1.fontSize">
-              About
-            </Box>
-            <Box
-              mx={2}
-              fontSize="subtitle1.fontSize"
-              fontWeight="fontWeightMedium"
-            >
-              Contact
-            </Box>
-            <Box mx={2} fontSize="subtitle1.fontSize">
-              Login
-            </Box>
-          </Box>
-        </Grid>
         {/* Login Modal*/}
         <Grid
           item
@@ -157,12 +132,12 @@ const Login = () => {
                   <Button
                     sx={{
                       height: 50,
-                      backgroundColor: "#FFDEB9",
+                      backgroundColor: "#7149C6",
                       width: "100%",
-                      color: "black",
+                      color: "white",
                       mt: 4,
                       "&:hover": {
-                        backgroundColor: "#FFDEB9",
+                        backgroundColor: "#7149C6",
                       },
                     }}
                   >
