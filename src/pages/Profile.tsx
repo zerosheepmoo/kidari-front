@@ -6,7 +6,6 @@ import { Box, Button, Grid, Typography } from "@mui/material";
 import TopNav from "../components/TopNav";
 import { fetchMe } from "../apis/user";
 import EditProfileModal from "../components/EditProfileModal";
-import { JoinLeftSharp } from "@mui/icons-material";
 
 const Profile = () => {
   const [user, setUser] = useAtom(userAtom);
@@ -14,15 +13,15 @@ const Profile = () => {
   const navi = useNavigate();
 
   const stars: any = [];
-  //   Im sorry Moo
 
+  // This fecthes the user once it is inside the path
   useEffect(() => {
     (async () => {
       try {
         const u = await fetchMe();
         if (u) {
           setUser(u);
-          console.log(u);
+          console.log("logged in");
         } else {
           navi("/login");
         }
@@ -32,6 +31,7 @@ const Profile = () => {
     })();
   }, []);
 
+  //   This gets the rating of the user and then provides image of the rating based on it
   const getStars = () => {
     if (user) {
       let abx = user.rating!;
@@ -68,6 +68,7 @@ const Profile = () => {
         overflowX: "hidden",
       }}
     >
+      {/* Edit Profile Modal Section */}
       <EditProfileModal
         onClose={() => setShowEditModal(false)}
         open={showEditModal}
@@ -82,6 +83,7 @@ const Profile = () => {
         height={"100%"}
         position={"relative"}
       >
+        {/* Top Nav Section */}
         <TopNav />
         <Grid
           display={"flex"}

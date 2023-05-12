@@ -1,16 +1,5 @@
-import {
-  Box,
-  Button,
-  Grid,
-  MenuItem,
-  Select,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import BasicModal from "./BasicModal";
-import { useState } from "react";
-import { UserType } from "../consts/user-const";
-import { userSignUp } from "../apis/user";
 import { useNavigate } from "react-router-dom";
 import { Event } from "../interfaces/event-api";
 import { toast } from "react-hot-toast";

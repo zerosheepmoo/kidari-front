@@ -27,6 +27,7 @@ const BasicModal: React.FC<BasicModalProps & DialogProps> = ({
   ...dialogProps
 }) => {
   return (
+    // Modal Component that can be used for all
     <Dialog
       {...dialogProps}
       open={open}

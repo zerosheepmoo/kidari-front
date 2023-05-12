@@ -28,6 +28,7 @@ const About = () => {
   }, []);
 
   return (
+    // This is a static page that introduces our idea. I believe not much algorithm is used here for me to comment
     <Grid
       container
       sx={{

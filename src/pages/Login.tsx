@@ -13,10 +13,11 @@ const Login = () => {
   //  user
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useAtom(userAtom);
+  const [_user, setUser] = useAtom(userAtom);
 
   const [error, setError] = useState<string | undefined>(undefined);
 
+  // This fetches based on cookie and auto logs in if there has been
   useEffect(() => {
     (async () => {
       try {
@@ -25,7 +26,7 @@ const Login = () => {
           setUser(u);
           navi("/home");
         } else {
-          console.log("u gam"), u;
+          console.log("User login"), u;
         }
       } catch (e) {
         console.log(e);
@@ -36,8 +37,8 @@ const Login = () => {
   // modal
   const [showModal, setShowModal] = useState(false);
 
+  // This takes email and password receives cookie
   const handleLogin = async () => {
-    console.log("login", email, password);
     if (!(email && password)) return;
     try {
       const user = await userSignIn({ email: email, password: password });
@@ -62,6 +63,7 @@ const Login = () => {
         flexDirection: "column",
       }}
     >
+      {/* Create account modal section */}
       <CreateAccountModal
         open={showModal}
         onClose={() => setShowModal(false)}
@@ -75,7 +77,6 @@ const Login = () => {
         flexDirection={"column"}
         height={"100%"}
       >
-        {/* Top Nav */}
         {/* Login Modal*/}
         <Grid
           item
@@ -83,7 +84,6 @@ const Login = () => {
           sx={{
             width: "100%",
             height: "100%",
-            // backgroundColor: "red",
             alignItems: "center",
           }}
         >
@@ -96,6 +96,7 @@ const Login = () => {
               flexDirection: "row",
             }}
           >
+            {/* Fade Animation of the image */}
             <Fade in timeout={3000}>
               <Box
                 display={"flex"}
@@ -126,6 +127,7 @@ const Login = () => {
                 ></Box>
               </Box>
             </Fade>
+            {/* Login Section */}
             <Box display={"flex"} width={"50%"} flexDirection={"column"}>
               <Box
                 display={"flex"}
@@ -188,6 +190,7 @@ const Login = () => {
                     Login
                   </Button>
                 </Box>
+                {/* Creates new account, opening create new account modal */}
                 <Box
                   display={"flex"}
                   sx={{ width: "100%", p: 2 }}
@@ -201,6 +204,7 @@ const Login = () => {
                     Create new account
                   </Typography>
                 </Box>
+                {/* Error shows when login does not work */}
                 <Box
                   display={"flex"}
                   sx={{ width: "100%", p: 2 }}

@@ -107,11 +107,13 @@ const Home = () => {
         overflowX: "hidden",
       }}
     >
+      {/* Event Modal That shows descriptions of the event */}
       <EventModal
         onClose={() => setShowEventModal(false)}
         open={showEventModal}
         event={selectedEvent ?? undefined}
       />
+      {/* Create Event Modal that shows the input textfields */}
       <CreateEventModal
         onClose={() => setCreateEventModal(false)}
         open={showCreateEventModal}
@@ -125,7 +127,9 @@ const Home = () => {
         flexDirection={"column"}
         height={"100%"}
       >
+        {/* Top Navigation */}
         <TopNav />
+        {/* Banner that shows the accumulated amount with animated Numbers */}
         <Box
           display={"flex"}
           height={450}
@@ -204,21 +208,14 @@ const Home = () => {
             />
             K
           </Typography>
-          {/* <Box sx={{ position: "absolute", right: 0 }}>
-            <img
-              src={"public/images/kidari_man-removebg-preview.png"}
-              height={400}
-            />
-          </Box> */}
         </Box>
+        {/* Start of Holding Event Section */}
         <Box
           display={"flex"}
           height={"auto"}
           width={"100%"}
           mt={4}
           flexDirection={"column"}
-
-          // sx={{ backgroundColor: "black" }}
         >
           <Box display={"flex"} width={"100%"}>
             <Typography display={"flex"} fontWeight={400} fontSize={30}>
@@ -311,6 +308,7 @@ const Home = () => {
             )}
           </Box>
         </Box>
+        {/* Held Event Section */}
         <Box display={"flex"} height={"auto"} width={"100%"}>
           <Typography fontWeight={400} fontSize={30}>
             Held Events
@@ -400,6 +398,7 @@ const Home = () => {
           )}
         </Box>
       </Grid>
+      {/* Fab button that opens create event modal */}
       <Box sx={{ position: "fixed", right: 40, bottom: 40 }}>
         <Fab
           color="primary"
