@@ -3,6 +3,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import {
   createBrowserRouter,
   createRoutesFromElements,
+  Outlet,
   Route,
   RouterProvider,
 } from "react-router-dom";
@@ -11,17 +12,21 @@ import "./App.css";
 import theme from "./theme";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
 import Landing from "./pages/Landing";
+import Profile from "./pages/Profile";
+
+const EmptyLayout = () => {
+  return <Outlet />;
+};
 
 const App = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route path="/">
+      <Route path="/" element={<EmptyLayout />}>
         <Route index element={<Landing />} />
         <Route path="login" element={<Login />} />
         <Route path="home" element={<Home />} />
-        <Route path="signup" element={<SignUp />} />
+        <Route path="profile" element={<Profile />} />
       </Route>
     )
   );

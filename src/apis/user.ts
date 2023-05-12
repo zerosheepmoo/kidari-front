@@ -8,22 +8,15 @@ import {
 
 export const userSignIn = async (data: RequestPostSignInUser) => {
   const query = `v1/user/login`;
-  const ho = getHeaderOption();
-  if (!ho) return;
-  const body = await apiInstance
-    .post(query, { json: data, ...ho })
-    .json<User>();
+
+  const body = await apiInstance.post(query, { json: data }).json<User>();
   setATToLocalStorage(body);
   return body;
 };
 
 export const userSignUp = async (data: RequestPostSignUpUser) => {
-  const query = `v1/user/signup`;
-  const ho = getHeaderOption();
-  if (!ho) return;
-  const body = await apiInstance
-    .post(query, { json: data, ...ho })
-    .json<User>();
+  const query = `v1/user`;
+  const body = await apiInstance.post(query, { json: data }).json<User>();
   setATToLocalStorage(body);
   return body;
 };

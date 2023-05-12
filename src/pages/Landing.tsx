@@ -101,6 +101,7 @@ const Landing = () => {
               }}
             />
           </Fade>
+
           <Fade in timeout={3000}>
             <Typography
               sx={{

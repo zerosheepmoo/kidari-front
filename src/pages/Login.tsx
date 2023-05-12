@@ -1,28 +1,52 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { KeyboardDoubleArrowDown } from "@mui/icons-material";
 import { Box, Button, Fade, Grid, TextField, Typography } from "@mui/material";
 import TopNav from "../components/TopNav";
-import { userSignIn } from "../apis/user";
+import { fetchMe, userSignIn } from "../apis/user";
 import { userAtom } from "../jotais";
-import { useSetAtom } from "jotai";
+import { useAtom } from "jotai";
 import CreateAccountModal from "../components/CreateAccountModal";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navi = useNavigate();
   //  user
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [user, setUser] = useAtom(userAtom);
+
+  const [error, setError] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const u = await fetchMe();
+        if (u) {
+          setUser(u);
+          navi("/home");
+        } else {
+          console.log("u gam"), u;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    })();
+  }, []);
 
   // modal
   const [showModal, setShowModal] = useState(false);
-  const setUser = useSetAtom(userAtom);
 
   const handleLogin = async () => {
+    console.log("login", email, password);
     if (!(email && password)) return;
     const user = await userSignIn({ email: email, password: password });
     if (user) {
       console.log("logged in!");
+      setUser(user);
+      navi("/home");
     } else {
       console.log("something went wrong");
+      setError("Invalid Login");
     }
   };
 
@@ -122,12 +146,12 @@ const Login = () => {
                 alignSelf={"center"}
               >
                 <Box display={"flex"} width={"100%"}>
-                  <Typography>ID</Typography>
+                  <Typography>Email</Typography>
                 </Box>
                 <Box display={"flex"} justifyContent={"center"} width={"100%"}>
                   <TextField
                     sx={{ width: "100%" }}
-                    autoComplete="current-password"
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </Box>
                 <Box display={"flex"} width={"100%"} pt={1}>
@@ -138,6 +162,7 @@ const Login = () => {
                     sx={{ width: "100%" }}
                     type="password"
                     autoComplete="current-password"
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </Box>
                 <Box
@@ -156,6 +181,7 @@ const Login = () => {
                         backgroundColor: "#7149C6",
                       },
                     }}
+                    onClick={() => handleLogin()}
                   >
                     Login
                   </Button>
@@ -171,6 +197,15 @@ const Login = () => {
                     onClick={() => setShowModal(true)}
                   >
                     Create new account
+                  </Typography>
+                </Box>
+                <Box
+                  display={"flex"}
+                  sx={{ width: "100%", p: 2 }}
+                  justifyContent={"center"}
+                >
+                  <Typography sx={{ pr: 1, color: "red" }}>
+                    {error ?? undefined}
                   </Typography>
                 </Box>
               </Box>

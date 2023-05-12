@@ -46,6 +46,7 @@ const CreateAccountModal: React.FC<CreateAccountModalProps> = ({
     if (newUser) {
       console.log("user Created", newUser);
       navi("/login");
+      onClose();
     } else {
       console.log("Something Went Wrong", newUser);
     }
