@@ -26,6 +26,7 @@ export interface EventBase {
 
 export interface Event extends MongoIDIncluding, EventBase, ResponseUserHasAT {
   userOID: string;
+  registered: string;
 }
 
 export interface RequestPostDraftEvent {
@@ -67,4 +68,5 @@ export interface RequestEditEvent {
  */
 export interface EventDoc extends EventBase {
   userOID: string;
+  registered: string;
 }
