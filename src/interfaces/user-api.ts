@@ -24,6 +24,8 @@ export interface UserBase {
    * career for GIVER, brief introduction for TAKER
    */
   introduction: string;
+
+  account: string;
 }
 
 export interface User extends MongoIDIncluding, UserBase, ResponseUserHasAT {}
@@ -33,11 +35,14 @@ export interface RequestPostSignInUser {
   password: string;
 }
 export interface RequestPostSignUpUser {
-  name: string;
-  type: UserType;
   email: string;
   password: string;
-  phone?: string;
+  name: string;
+  type: UserType;
+  phone: string;
+
+  account?: string;
+  introduction?: string;
 }
 
 /**
