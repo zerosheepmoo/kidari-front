@@ -1,5 +1,12 @@
+import { Grid, Typography } from "@mui/material";
+import React from "react";
+
 const Login = () => {
-  return <div>Login</div>;
+  return (
+    <Grid>
+      <Typography>hello</Typography>
+    </Grid>
+  );
 };
 
 export default Login;
