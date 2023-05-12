@@ -19,6 +19,11 @@ export interface UserBase {
   type: UserType;
 
   phone: string;
+
+  /**
+   * career for GIVER, brief introduction for TAKER
+   */
+  introduction: string;
 }
 
 export interface User extends MongoIDIncluding, UserBase, ResponseUserHasAT {}
