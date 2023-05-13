@@ -81,7 +81,7 @@ const EventModal: React.FC<EventModalProps> = ({
 
   const checkValidForComment = () => {
     console.log("insode");
-    if (event && user) {
+    if (event?.process === EventProcess.DONE && user) {
       const x = event.registered.includes(user._id);
       console.log(event.registered, x);
       return x;
