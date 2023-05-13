@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 
 // fb config
 const firebaseConfig = {
-  apiKey: import.meta.env["FB_API"],
+  apiKey: import.meta.env["VITE_FB_API"],
   authDomain: "kidaris.firebaseapp.com",
   projectId: "kidaris",
   storageBucket: "kidaris.appspot.com",
