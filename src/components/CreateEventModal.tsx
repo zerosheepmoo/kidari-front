@@ -12,6 +12,11 @@ import { UserType } from "../consts/user-const";
 import { userSignUp } from "../apis/user";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { postEventDraft } from "../apis/event";
+import { uploadOneFileToS3 } from "../apis/upload";
+import { useAtom } from "jotai";
+import { userAtom } from "../jotais";
+import { RequestPostDraftEvent } from "../interfaces/event-api";
 
 export interface CreateEventModalProps {
   open: boolean;
@@ -25,16 +30,77 @@ const CreateEventModal: React.FC<CreateEventModalProps> = ({
   denyCallback,
 }) => {
   const navi = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [checkPassword, setCheckPassword] = useState("");
-  const [name, setName] = useState("");
-  const [type, setType] = useState(2);
-  const [phone, setPhone] = useState("");
+  const [user, setUser] = useAtom(userAtom);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState(0);
+  const [maxPeople, setMaxPeople] = useState(0);
+  const [deadline, setDeadline] = useState("");
+  const [holdingDate, setHoldingDate] = useState("");
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+
+  const uploadS3File = async (
+    file: File | null,
+    storeOID: string,
+    filename?: string
+  ) => {
+    if (!file || !storeOID) return;
+    const formData = new FormData();
+    let fn = file.name;
+    if (filename) {
+      const splitted = file.name.split(".");
+      const ext = splitted[splitted.length - 1];
+      fn = `${filename}.${ext}`;
+    }
+    formData.append("oneFile", file, fn);
+    const res = await uploadOneFileToS3(formData, storeOID);
+    return res;
+  };
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      const file = event.target.files[0];
+      setSelectedImage(file);
+      setPreviewImage(URL.createObjectURL(file));
+    }
+  };
 
   const handleCreateEvent = async () => {
-    toast.success("You have sucessfully created");
-    onClose();
+    if (
+      !(
+        title &&
+        description &&
+        price &&
+        maxPeople &&
+        deadline &&
+        holdingDate &&
+        selectedImage &&
+        user
+      )
+    )
+      return;
+
+    const aws = await uploadS3File(selectedImage, user._id);
+
+    const newEvent: RequestPostDraftEvent = {
+      title: title,
+      thumbnail: aws ? aws.src : "",
+      content: description,
+      peopleLimitNumber: String(maxPeople),
+      deadline: deadline,
+      holdingDate: holdingDate,
+    };
+
+    try {
+      await postEventDraft(newEvent).then((_res) => {
+        console.log("draft created");
+        toast.success("You have sucessfully created");
+        onClose();
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -47,12 +113,33 @@ const CreateEventModal: React.FC<CreateEventModalProps> = ({
       <Box display={"flex"} width={"100%"} pt={1}>
         <Typography>Image</Typography>
       </Box>
-      <Box display={"flex"} justifyContent={"center"} width={"100%"} pt={1}>
-        <TextField
-          sx={{ width: "100%" }}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+      <Box
+        display={"flex"}
+        justifyContent={"space-between"}
+        width={"100%"}
+        pt={1}
+      >
+        <Box display={"flex"}>
+          <TextField
+            type="file"
+            //   accept="image/*"
+            onChange={handleImageChange}
+            inputProps={{
+              id: "image-input",
+            }}
+          />
+        </Box>
+        <Box display={"flex"}>
+          {previewImage && (
+            <img
+              width={60}
+              height={60}
+              src={previewImage}
+              style={{ objectFit: "cover" }}
+              alt="Preview"
+            />
+          )}
+        </Box>
       </Box>
       <Box display={"flex"} width={"100%"} pt={1}>
         <Typography>Title</Typography>
@@ -60,8 +147,8 @@ const CreateEventModal: React.FC<CreateEventModalProps> = ({
       <Box display={"flex"} justifyContent={"center"} width={"100%"} pt={1}>
         <TextField
           sx={{ width: "100%" }}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
         />
       </Box>
       <Box display={"flex"} width={"100%"} pt={1}>
@@ -70,8 +157,8 @@ const CreateEventModal: React.FC<CreateEventModalProps> = ({
       <Box display={"flex"} justifyContent={"center"} width={"100%"} pt={1}>
         <TextField
           sx={{ width: "100%" }}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
         />
       </Box>
       <Box display={"flex"} width={"100%"} pt={1}>
@@ -80,8 +167,20 @@ const CreateEventModal: React.FC<CreateEventModalProps> = ({
       <Box display={"flex"} justifyContent={"center"} width={"100%"} pt={1}>
         <TextField
           sx={{ width: "100%" }}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={price}
+          type={"number"}
+          onChange={(e) => setPrice(Number(e.target.value))}
+        />
+      </Box>
+      <Box display={"flex"} width={"100%"} pt={1}>
+        <Typography>Max people to apply</Typography>
+      </Box>
+      <Box display={"flex"} justifyContent={"center"} width={"100%"} pt={1}>
+        <TextField
+          sx={{ width: "100%" }}
+          value={maxPeople}
+          type={"number"}
+          onChange={(e) => setMaxPeople(Number(e.target.value))}
         />
       </Box>
       <Box display={"flex"} width={"100%"} pt={1}>
@@ -90,8 +189,20 @@ const CreateEventModal: React.FC<CreateEventModalProps> = ({
       <Box display={"flex"} justifyContent={"center"} width={"100%"} pt={1}>
         <TextField
           sx={{ width: "100%" }}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={deadline}
+          placeholder="YYYY/MM/DD"
+          onChange={(e) => setDeadline(e.target.value)}
+        />
+      </Box>
+      <Box display={"flex"} width={"100%"} pt={1}>
+        <Typography>Holding Date</Typography>
+      </Box>
+      <Box display={"flex"} justifyContent={"center"} width={"100%"} pt={1}>
+        <TextField
+          sx={{ width: "100%" }}
+          value={holdingDate}
+          placeholder="YYYY/MM/DD"
+          onChange={(e) => setHoldingDate(e.target.value)}
         />
       </Box>
 
