@@ -20,6 +20,8 @@ import { userAtom, userLoggedInCheckedAtom } from "./jotais";
 import { useEffect } from "react";
 import { fetchMe } from "./apis/user";
 import TopNav from "./components/TopNav";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { app as _app } from "./fb";
 
 const EmptyLayout = () => {
   return (
