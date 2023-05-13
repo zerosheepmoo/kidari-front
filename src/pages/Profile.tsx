@@ -216,34 +216,30 @@ const Profile = () => {
             })}
           </Box>
         </Box>
-        <Grid display={"flex"} width={"70vw"} mt={10} justifyContent={"center"}>
+        <Box width={"70vw"} mt={10}>
           <Box
             display={"flex"}
-            height={"auto"}
+            height={"100%"}
             alignItems={"center"}
-            width={"70%"}
             borderRadius={"1rem"}
           >
             <Typography display={"flex"} fontSize={23} fontWeight={700}>
               Participated Events
             </Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              width: "100%",
+              overflowX: "auto",
+              flexShrink: 0,
+            }}
+          >
             {finishedEvs.map((ev, idx) => {
-              return <EventCard {...ev} key={`fev-${idx}`} />;
+              return <EventCard {...ev} key={`rev-${idx}`} />;
             })}
           </Box>
-        </Grid>
-        <Grid
-          display={"flex"}
-          width={"100%"}
-          height={250}
-          sx={{ flexDirection: "column" }}
-          justifyContent={"center"}
-          alignItems={"center"}
-          mt={2}
-          position={"relative"}
-        >
-          <Box display={"flex"}></Box>
-        </Grid>
+        </Box>
       </Grid>
     </Grid>
   );
