@@ -32,7 +32,24 @@ const EmptyLayout = () => {
   );
 };
 
-const Core = () => {
+const App = () => {
+  const setUser = useSetAtom(userAtom);
+  const setHasUserLoggedIn = useSetAtom(userLoggedInCheckedAtom);
+  useEffect(() => {
+    (async () => {
+      try {
+        const user = await fetchMe();
+        setUser(() => user);
+        setHasUserLoggedIn(() => true);
+      } catch (e) {
+        console.log("not logged in (no cookie)");
+        setHasUserLoggedIn(() => true);
+      }
+    })();
+
+    // turn off lint for jotais
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<EmptyLayout />}>
@@ -56,25 +73,6 @@ const Core = () => {
       <RouterProvider router={router} />
     </ThemeProvider>
   );
-};
-const App = () => {
-  const setUser = useSetAtom(userAtom);
-  const setHasUserLoggedIn = useSetAtom(userLoggedInCheckedAtom);
-  useEffect(() => {
-    (async () => {
-      try {
-        const user = await fetchMe();
-        setUser(() => user);
-        setHasUserLoggedIn(() => true);
-      } catch (e) {
-        console.log("not logged in (no cookie)");
-        setHasUserLoggedIn(() => true);
-      }
-    })();
-    // turn off lint for jotais
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  return <Core />;
 };
 
 export default App;
