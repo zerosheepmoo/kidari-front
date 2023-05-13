@@ -41,7 +41,7 @@ const NavActionButton: React.FC<{
         color: "black",
       }}
     >
-      {isUserTab ? (
+      {isUserTab && user ? (
         <Box
           display={"flex"}
           sx={{
