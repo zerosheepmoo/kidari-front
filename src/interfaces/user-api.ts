@@ -28,8 +28,9 @@ export interface UserBase {
   account: string;
   /**
    * AI trained value
+   * @default 5
    */
-  rating?: number;
+  rating: number;
   /**
    * profile image s3 address
    */

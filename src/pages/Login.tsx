@@ -1,41 +1,35 @@
-import React, { useEffect, useState } from "react";
-import { KeyboardDoubleArrowDown } from "@mui/icons-material";
+import { useEffect, useState } from "react";
 import { Box, Button, Fade, Grid, TextField, Typography } from "@mui/material";
-import TopNav from "../components/TopNav";
-import { fetchMe, userSignIn } from "../apis/user";
-import { userAtom } from "../jotais";
-import { useAtom } from "jotai";
+import { userSignIn } from "../apis/user";
+import { userAtom, userLoggedInCheckedAtom } from "../jotais";
+import { useAtom, useAtomValue } from "jotai";
 import CreateAccountModal from "../components/CreateAccountModal";
 import { useNavigate } from "react-router-dom";
+import Bingle from "../components/Bingle";
 
 const Login = () => {
   const navi = useNavigate();
-  //  user
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [_user, setUser] = useAtom(userAtom);
+  const [user, setUser] = useAtom(userAtom);
+  const hasUserLoggedIn = useAtomValue(userLoggedInCheckedAtom);
+  const [showModal, setShowModal] = useState(false);
 
   const [error, setError] = useState<string | undefined>(undefined);
 
-  // This fetches based on cookie and auto logs in if there has been
+  // NOTE: if there is no user info, then redirect to login page
   useEffect(() => {
     (async () => {
-      try {
-        const u = await fetchMe();
-        if (u) {
-          setUser(u);
-          navi("/home");
-        } else {
-          console.log("User login"), u;
-        }
-      } catch (e) {
-        console.log(e);
-      }
+      if (!hasUserLoggedIn || !user) return;
+      navi("/home");
     })();
-  }, []);
+    // turn off lint for navi
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, hasUserLoggedIn]);
 
-  // modal
-  const [showModal, setShowModal] = useState(false);
+  if (!hasUserLoggedIn) {
+    return <Bingle />;
+  }
 
   // This takes email and password receives cookie
   const handleLogin = async () => {
@@ -44,8 +38,7 @@ const Login = () => {
       const user = await userSignIn({ email: email, password: password });
       if (user) {
         console.log("logged in!");
-        setUser(user);
-        navi("/home");
+        setUser(() => user);
       }
     } catch (e) {
       console.log(e);
@@ -105,7 +98,7 @@ const Login = () => {
                 data-aos="fade-left"
               >
                 <img
-                  src={"public/images/baking.webp"}
+                  src={"/images/baking.webp"}
                   style={{
                     alignSelf: "center",
                     width: "90%",
@@ -137,7 +130,7 @@ const Login = () => {
                 pb={9}
               >
                 <img
-                  src={"public/images/kidari_b.webp"}
+                  src={"/images/kidari_b.webp"}
                   style={{
                     height: 100,
                   }}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Box, Button, Fade, Typography } from "@mui/material";
 import AOS from "aos";
 
@@ -22,7 +22,7 @@ const Landing = () => {
           }}
         >
           <img
-            src={"public/images/baking.webp"}
+            src={"/images/baking.webp"}
             style={{
               width: "100%",
               height: "100%",
@@ -47,7 +47,7 @@ const Landing = () => {
           {/* Fade animation that triggers logo */}
           <Fade in timeout={2000}>
             <img
-              src={"public/images/Kidari_w.webp"}
+              src={"/images/kidari_w.webp"}
               style={{
                 height: 300,
                 objectFit: "cover",

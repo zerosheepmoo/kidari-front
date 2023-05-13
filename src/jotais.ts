@@ -7,5 +7,4 @@ export const numberAtom = atom<number>(-1);
 export const stringResettableAtom = atomWithReset<string>("");
 
 export const userAtom = atom<User | undefined>(undefined);
-
-export const currentTabAtom = atom<number>(0);
+export const userLoggedInCheckedAtom = atom(false);

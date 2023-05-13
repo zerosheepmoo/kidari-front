@@ -1,42 +1,37 @@
-import { useAtom } from "jotai";
-import { userAtom } from "../jotais";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Box, Button, Grid, Typography } from "@mui/material";
-import TopNav from "../components/TopNav";
-import { fetchMe } from "../apis/user";
+import { useAtomValue } from "jotai";
+import { userAtom, userLoggedInCheckedAtom } from "../jotais";
 import EditProfileModal from "../components/EditProfileModal";
+import { useNavigate } from "react-router-dom";
+import Bingle from "../components/Bingle";
 
 const Profile = () => {
-  const [user, setUser] = useAtom(userAtom);
+  const user = useAtomValue(userAtom);
+  const hasUserLoggedIn = useAtomValue(userLoggedInCheckedAtom);
+
   const [showEditModal, setShowEditModal] = useState(false);
   const navi = useNavigate();
 
-  const stars: any = [];
+  // NOTE: if there is no user info, then redirect to login page
 
-  // This fecthes the user once it is inside the path
   useEffect(() => {
     (async () => {
-      try {
-        const u = await fetchMe();
-        if (u) {
-          setUser(u);
-          console.log("logged in");
-        } else {
-          navi("/login");
-        }
-      } catch (e) {
-        console.log(e);
-      }
+      if (!hasUserLoggedIn || user) return;
+      navi("/login");
     })();
-  }, []);
+    // turn off lint for navi
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasUserLoggedIn, user]);
+
+  const stars: React.ReactNode[] = [];
 
   //   This gets the rating of the user and then provides image of the rating based on it
   const getStars = () => {
     if (user) {
-      let abx = user.rating!;
+      let abx = user.rating / 2;
       for (let i = 0; i < 5; i++) {
-        if (user.rating! === 0) {
+        if (user.rating === 0) {
           stars.push(<img src={"icons/star_g.svg"} />);
           stars.push(<img src={"icons/star_g.svg"} />);
           stars.push(<img src={"icons/star_g.svg"} />);
@@ -56,6 +51,9 @@ const Profile = () => {
     }
     return stars;
   };
+  if (!hasUserLoggedIn) {
+    return <Bingle />;
+  }
 
   return (
     <Grid
@@ -84,7 +82,6 @@ const Profile = () => {
         position={"relative"}
       >
         {/* Top Nav Section */}
-        <TopNav />
         <Grid
           display={"flex"}
           width={"100%"}
@@ -116,11 +113,7 @@ const Profile = () => {
                 }}
               >
                 <img
-                  src={
-                    user
-                      ? "public/icons/profile_d.png"
-                      : "public/icons/profile_d.png"
-                  }
+                  src={user ? "/icons/profile_d.png" : "/icons/profile_d.png"}
                   style={{ width: 100, height: 100 }}
                 />
               </Box>

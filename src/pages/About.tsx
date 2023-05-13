@@ -1,32 +1,6 @@
-import { useAtom } from "jotai";
-import { userAtom } from "../jotais";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Box, Button, Grid, Typography } from "@mui/material";
-import TopNav from "../components/TopNav";
-import { fetchMe } from "../apis/user";
+import { Box, Grid, Typography } from "@mui/material";
 
 const About = () => {
-  const [user, setUser] = useAtom(userAtom);
-  const [showEditModal, setShowEditModal] = useState(false);
-  const navi = useNavigate();
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const u = await fetchMe();
-        if (u) {
-          setUser(u);
-          console.log(u);
-        } else {
-          navi("/login");
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    })();
-  }, []);
-
   return (
     // This is a static page that introduces our idea. I believe not much algorithm is used here for me to comment
     <Grid
@@ -49,7 +23,6 @@ const About = () => {
         height={"100%"}
         position={"relative"}
       >
-        <TopNav />
         <Box
           display={"flex"}
           flexDirection={"row"}
@@ -60,7 +33,7 @@ const About = () => {
           <Box display={"flex"} width={"50%"}>
             <img
               width={"100%"}
-              src={"public/images/about.png"}
+              src={"/images/about.png"}
               style={{ objectFit: "cover" }}
             />
           </Box>

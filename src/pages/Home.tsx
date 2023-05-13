@@ -1,69 +1,22 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  Add,
-  AddIcCallOutlined,
-  ArrowForward,
-  KeyboardDoubleArrowDown,
-} from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  Fab,
-  Fade,
-  Grid,
-  Slide,
-  Typography,
-  useMediaQuery,
-} from "@mui/material";
+import { useEffect, useState } from "react";
+import { Add } from "@mui/icons-material";
+import { Box, Fab, Grid, Typography } from "@mui/material";
 import AOS from "aos";
-import { useAtom } from "jotai";
-import { userAtom } from "../jotais";
-import TopNav from "../components/TopNav";
-import { getAllEvents, getEvents } from "../apis/event";
+import { useAtomValue } from "jotai";
+import { userAtom, userLoggedInCheckedAtom } from "../jotais";
+import { getAllEvents } from "../apis/event";
 import { Event } from "../interfaces/event-api";
-import { fetchMe } from "../apis/user";
 import EventModal from "../components/EventModal";
 import AnimatedNumbers from "react-animated-numbers";
 import CreateEventModal from "../components/CreateEventModal";
-
-const mobileWidth = 700;
-const nineHundWidth = 900;
-const tabletWidth = 1200;
-
-// const mobileMaxWidthMediaQuery = `@media (max-width:${mobileWidth}px)`;
-// const nineHundMaxWidthMediaQuery = `@media (max-width:${nineHundWidth}px)`;
-// const tabletMaxWidthMediaQuery = `@media (max-width:${tabletWidth}px)`;
-
-const dummy = [
-  {
-    title: "Hello",
-    thumbnail: "public/images/baking.webp",
-    content: "what the hell",
-    peopleLimitNumber: 3,
-    deadline: "2021/03/02",
-    holdingDate: "2021/04/02",
-  },
-  {
-    title: "Hello",
-    thumbnail: "public/images/Kidari_b.webp",
-    content: "what the hell",
-    peopleLimitNumber: 3,
-    deadline: "2021/03/02",
-    holdingDate: "2021/04/02",
-  },
-  {
-    title: "Hello",
-    thumbnail: "public/images/baking.webp",
-    content: "what the hell",
-    peopleLimitNumber: 3,
-    deadline: "2021/03/02",
-    holdingDate: "2021/04/02",
-  },
-];
+import { useNavigate } from "react-router-dom";
+import Bingle from "../components/Bingle";
 
 const Home = () => {
   const [events, setEvents] = useState<Event[]>();
-  const [user, setUser] = useAtom(userAtom);
+  const user = useAtomValue(userAtom);
+  const hasUserLoggedIn = useAtomValue(userLoggedInCheckedAtom);
+  const navi = useNavigate();
 
   const [showEventModal, setShowEventModal] = useState(false);
   const [showCreateEventModal, setCreateEventModal] = useState(false);
@@ -81,20 +34,23 @@ const Home = () => {
     })();
   }, []);
 
+  // NOTE: if there is no user info, then redirect to login page
   useEffect(() => {
     (async () => {
-      try {
-        const me = await fetchMe();
-        setUser(me);
-      } catch (e) {
-        console.log(e);
-      }
+      if (!hasUserLoggedIn || user) return;
+      navi("/login");
     })();
-  }, []);
+    // turn off lint for navi
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasUserLoggedIn, user]);
 
   useEffect(() => {
     AOS.init();
   }, []);
+
+  if (!hasUserLoggedIn) {
+    return <Bingle />;
+  }
 
   return (
     <Grid
@@ -127,8 +83,6 @@ const Home = () => {
         flexDirection={"column"}
         height={"100%"}
       >
-        {/* Top Navigation */}
-        <TopNav />
         {/* Banner that shows the accumulated amount with animated Numbers */}
         <Box
           display={"flex"}
@@ -256,11 +210,7 @@ const Home = () => {
                     >
                       <img
                         width={"100%"}
-                        src={
-                          e.thumbnail
-                            ? e.thumbnail
-                            : "public/images/baking.webp"
-                        }
+                        src={e.thumbnail ? e.thumbnail : "/images/baking.webp"}
                         style={{
                           borderRadius: "5px 5px 0 0",
                           objectFit: "cover",
@@ -348,9 +298,7 @@ const Home = () => {
                   >
                     <img
                       width={"100%"}
-                      src={
-                        e.thumbnail ? e.thumbnail : "public/images/baking.webp"
-                      }
+                      src={e.thumbnail ? e.thumbnail : "/images/baking.webp"}
                       style={{
                         borderRadius: "5px 5px 0 0",
                         objectFit: "cover",

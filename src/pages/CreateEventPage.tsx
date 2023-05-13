@@ -1,7 +1,27 @@
 import { Box, Grid, Typography } from "@mui/material";
-import TopNav from "../components/TopNav";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAtomValue } from "jotai";
+import { userAtom, userLoggedInCheckedAtom } from "../jotais";
+import Bingle from "../components/Bingle";
 
 const CreateEventPage = () => {
+  const user = useAtomValue(userAtom);
+  const hasUserLoggedIn = useAtomValue(userLoggedInCheckedAtom);
+  const navi = useNavigate();
+  // NOTE: if there is no user info, then redirect to login page
+  useEffect(() => {
+    (async () => {
+      if (!hasUserLoggedIn || user) return;
+      navi("/login");
+    })();
+    // turn off lint for navi
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasUserLoggedIn, user]);
+
+  if (!hasUserLoggedIn) {
+    return <Bingle />;
+  }
   return (
     <Grid
       container
@@ -21,7 +41,6 @@ const CreateEventPage = () => {
         flexDirection={"column"}
         height={"100%"}
       >
-        <TopNav />
         <Box
           display={"flex"}
           height={300}

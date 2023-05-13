@@ -1,4 +1,3 @@
-import reactLogo from "./assets/react.svg";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import {
   createBrowserRouter,
@@ -16,12 +15,22 @@ import Landing from "./pages/Landing";
 import Profile from "./pages/Profile";
 import About from "./pages/About";
 import { Toaster } from "react-hot-toast";
+import { useSetAtom } from "jotai";
+import { userAtom, userLoggedInCheckedAtom } from "./jotais";
+import { useEffect } from "react";
+import { fetchMe } from "./apis/user";
+import TopNav from "./components/TopNav";
 
 const EmptyLayout = () => {
-  return <Outlet />;
+  return (
+    <>
+      <TopNav />
+      <Outlet />
+    </>
+  );
 };
 
-const App = () => {
+const Core = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<EmptyLayout />}>
@@ -33,6 +42,7 @@ const App = () => {
       </Route>
     )
   );
+
   return (
     <ThemeProvider theme={theme}>
       <Toaster
@@ -44,6 +54,25 @@ const App = () => {
       <RouterProvider router={router} />
     </ThemeProvider>
   );
+};
+const App = () => {
+  const setUser = useSetAtom(userAtom);
+  const setHasUserLoggedIn = useSetAtom(userLoggedInCheckedAtom);
+  useEffect(() => {
+    (async () => {
+      try {
+        const user = await fetchMe();
+        setUser(() => user);
+        setHasUserLoggedIn(() => true);
+      } catch (e) {
+        console.log("not logged in (no cookie)");
+        setHasUserLoggedIn(() => true);
+      }
+    })();
+    // turn off lint for jotais
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  return <Core />;
 };
 
 export default App;

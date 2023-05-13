@@ -44,7 +44,7 @@ const EventModal: React.FC<EventModalProps> = ({
         <img
           width={"100%"}
           height={"100%"}
-          src={event ? event.thumbnail : "public/images/baking.webp"}
+          src={event ? event.thumbnail : "/images/baking.webp"}
           style={{
             borderRadius: "5px 5px 0 0",
             objectFit: "cover",
@@ -101,11 +101,7 @@ const EventModal: React.FC<EventModalProps> = ({
               }}
             >
               <img
-                src={
-                  event
-                    ? "public/icons/profile_d.png"
-                    : "public/icons/profile_d.png"
-                }
+                src={event ? "/icons/profile_d.png" : "/icons/profile_d.png"}
                 style={{ width: 30, height: 30 }}
               />
             </Box>
