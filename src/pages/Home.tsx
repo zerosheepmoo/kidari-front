@@ -12,6 +12,7 @@ import CreateEventModal from "../components/CreateEventModal";
 import { useNavigate } from "react-router-dom";
 import Bingle from "../components/Bingle";
 import { EventProcess } from "../consts/event-const";
+import EventCard from "../components/EventCard";
 
 const Home = () => {
   const [events, setEvents] = useState<Event[]>();
@@ -181,88 +182,24 @@ const Home = () => {
           <Box
             display={"flex"}
             width={"100%"}
-            flexWrap={"wrap"}
             mt={4}
-            sx={{ overFlowX: "100%" }}
+            sx={{ overflowX: "auto" }}
           >
-            {events ? (
-              // filtered events with process type Wrok in progoress
-              events
-                .filter((ev) => ev.process === EventProcess.WIP)
-                .map((e, idx) => {
-                  return (
-                    <Box
-                      display={"flex"}
-                      height={400}
-                      width={250}
-                      flexDirection={"column"}
-                      key={`event_${idx}`}
-                      mr={2}
-                      onClick={() => {
-                        setShowEventModal(true);
-                        setSelectedEvent(e);
-                      }}
-                    >
-                      <Box
-                        display={"flex"}
-                        height={200}
-                        width={"100%"}
-                        sx={{
-                          borderRadius: "5px 5px 0 0 ",
-                          border: "solid 1px #E5E8EB",
-                          borderBottom: 0,
-                        }}
-                      >
-                        <img
-                          width={"100%"}
-                          src={
-                            e.thumbnail ? e.thumbnail : "/images/baking.webp"
-                          }
-                          style={{
-                            borderRadius: "5px 5px 0 0",
-                            objectFit: "cover",
-                          }}
-                        />
-                      </Box>
-                      <Box
-                        display={"flex"}
-                        height={130}
-                        width={"100%"}
-                        sx={{
-                          borderRadius: "0 0 5px 5px",
-                          border: "solid 1px #E5E8EB",
-                          borderTop: "",
-                          flexDirection: "column",
-                          p: 2,
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <Typography display={"flex"}>{e.deadline}</Typography>
-                        <Typography
-                          display={"flex"}
-                          sx={{
-                            fontSize: 23,
-                            fontWeight: 600,
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            maxWidth: "100%",
-                          }}
-                        >
-                          {e.title}
-                        </Typography>
-                        <Box display={"flex"} justifyContent={"flex-end"}>
-                          <Typography display={"flex"} fontSize={13}>
-                            ~ {e.deadline}
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </Box>
-                  );
-                })
-            ) : (
-              <></>
-            )}
+            {events
+              ?.filter((ev) => ev.process === EventProcess.WIP)
+              .reverse()
+              .map((e, idx) => {
+                return (
+                  <EventCard
+                    key={`event_${idx}`}
+                    onClick={() => {
+                      setShowEventModal(true);
+                      setSelectedEvent(e);
+                    }}
+                    {...e}
+                  />
+                );
+              })}
           </Box>
         </Box>
         {/* Held Event Section */}
@@ -271,84 +208,21 @@ const Home = () => {
             Held Events
           </Typography>
         </Box>
-        <Box
-          display={"flex"}
-          width={"100%"}
-          flexWrap={"wrap"}
-          mt={4}
-          sx={{ overFlowX: "100%" }}
-        >
+        <Box display={"flex"} width={"100%"} mt={4} sx={{ overflowX: "auto" }}>
           {events ? (
             // filtered events with process type DONE
             events
               .filter((ev) => ev.process === EventProcess.DONE)
               .map((e, idx) => {
                 return (
-                  <Box
-                    display={"flex"}
-                    height={400}
-                    width={250}
-                    flexDirection={"column"}
+                  <EventCard
                     key={`event_${idx}`}
-                    mr={2}
                     onClick={() => {
                       setShowEventModal(true);
                       setSelectedEvent(e);
                     }}
-                  >
-                    <Box
-                      display={"flex"}
-                      height={200}
-                      width={"100%"}
-                      sx={{
-                        borderRadius: "5px 5px 0 0 ",
-                        border: "solid 1px #E5E8EB",
-                        borderBottom: 0,
-                      }}
-                    >
-                      <img
-                        width={"100%"}
-                        src={e.thumbnail ? e.thumbnail : "/images/baking.webp"}
-                        style={{
-                          borderRadius: "5px 5px 0 0",
-                          objectFit: "cover",
-                        }}
-                      />
-                    </Box>
-                    <Box
-                      display={"flex"}
-                      height={130}
-                      width={"100%"}
-                      sx={{
-                        borderRadius: "0 0 5px 5px",
-                        border: "solid 1px #E5E8EB",
-                        borderTop: "",
-                        flexDirection: "column",
-                        p: 2,
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Typography display={"flex"}>{e.deadline}</Typography>
-                      <Typography
-                        display={"flex"}
-                        sx={{
-                          fontSize: 23,
-                          fontWeight: 600,
-                          whiteSpace: "nowrap",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          maxWidth: "100%",
-                        }}
-                      >
-                        {e.title}
-                      </Typography>
-                      <Box display={"flex"} justifyContent={"flex-end"}>
-                        <Typography display={"flex"} fontSize={13}>
-                          ~ {e.deadline}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </Box>
+                    {...e}
+                  />
                 );
               })
           ) : (

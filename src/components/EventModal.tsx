@@ -9,11 +9,11 @@ import { getEventComments, postEventComment } from "../apis/event-comment";
 import { EventComment } from "../interfaces/event-comment-api";
 import { User } from "../interfaces/user-api";
 import { registerEvent } from "../apis/event";
+import { EventProcess } from "../consts/event-const";
 
 export interface EventModalProps {
   open: boolean;
   onClose: () => void;
-  denyCallback?: () => void;
   event: Event | undefined;
   user: User | undefined;
 }
@@ -21,15 +21,16 @@ export interface EventModalProps {
 const EventModal: React.FC<EventModalProps> = ({
   open,
   onClose,
-  denyCallback,
   event,
   user,
 }) => {
-  const navi = useNavigate();
   const [comments, setComments] = useState<EventComment[]>([]);
   const [comment, setComment] = useState("");
 
   const [canComment, setCanComment] = useState(false);
+  const navi = useNavigate();
+
+  const isWIP = event?.process === EventProcess.WIP;
 
   useEffect(() => {
     (async () => {
@@ -57,6 +58,9 @@ const EventModal: React.FC<EventModalProps> = ({
     try {
       const x = await postEventComment(event._id, { content: comment });
       toast.success("You have sucessfully commented");
+      setTimeout(() => {
+        navi("/profile");
+      }, 1000);
       onClose();
     } catch (e) {
       console.log(e);
@@ -305,9 +309,15 @@ const EventModal: React.FC<EventModalProps> = ({
         )}
       </>
 
+      {/* participate button */}
+
       <Box display={"flex"} sx={{ width: "100%" }} justifyContent={"center"}>
         <Button
-          disabled={user ? (user.type === 2 ? true : false) : false}
+          disabled={
+            !isWIP ||
+            user?.type !== UserType.LEARNER ||
+            event.registered.includes(user?._id ?? "")
+          }
           sx={{
             height: 50,
             backgroundColor: "#7149C6",
@@ -318,12 +328,16 @@ const EventModal: React.FC<EventModalProps> = ({
               backgroundColor: "#7149C6",
             },
             "&:disabled": {
-              backgroundColor: "grey",
+              backgroundColor: "#cccccc",
             },
           }}
           onClick={() => handleRequest()}
         >
-          Request to participate
+          {!isWIP
+            ? "The Event ends!"
+            : event.registered.includes(user?._id ?? "")
+            ? "You already Registered!"
+            : "Request to participate"}
         </Button>
       </Box>
     </BasicModal>

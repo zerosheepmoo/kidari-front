@@ -98,7 +98,7 @@ export const registerEvent = async (eventOID: string) => {
   const query = `v1/events/${eventOID}/register`;
   const ho = getHeaderOption();
   if (!ho) return; // case that access token removed
-  const body = await apiInstance.patch(query, { ...ho }).json<Event>();
+  const body = await apiInstance.post(query, { ...ho }).json<Event>();
   setATToLocalStorage(body);
   return body;
 };
@@ -107,7 +107,7 @@ export const unregisterEvent = async (eventOID: string) => {
   const query = `v1/events/${eventOID}/unregister`;
   const ho = getHeaderOption();
   if (!ho) return; // case that access token removed
-  const body = await apiInstance.patch(query, { ...ho }).json<Event>();
+  const body = await apiInstance.post(query, { ...ho }).json<Event>();
   setATToLocalStorage(body);
   return body;
 };
