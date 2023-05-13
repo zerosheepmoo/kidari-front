@@ -24,6 +24,14 @@ export const getEvents = async (userOID: string) => {
   const body = await apiInstance.get(query).json<Event[]>();
   return body;
 };
+/**
+ * NOTE do filter in front plz
+ */
+export const getEventsRelated = async (userOID: string) => {
+  const query = `v1/events/${userOID}/registered`;
+  const body = await apiInstance.get(query).json<Event[]>();
+  return body;
+};
 
 export const postEventDraft = async (data: RequestPostDraftEvent) => {
   const query = `v1/events`;
