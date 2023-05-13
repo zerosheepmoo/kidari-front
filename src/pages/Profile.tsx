@@ -5,6 +5,10 @@ import { userAtom, userLoggedInCheckedAtom } from "../jotais";
 import EditProfileModal from "../components/EditProfileModal";
 import { useNavigate } from "react-router-dom";
 import Bingle from "../components/Bingle";
+import { getEvents } from "../apis/event";
+import { EventProcess } from "../consts/event-const";
+import { Event } from "../interfaces/event-api";
+import EventCard from "../components/EventCard";
 
 const Profile = () => {
   const user = useAtomValue(userAtom);
@@ -12,6 +16,17 @@ const Profile = () => {
 
   const [showEditModal, setShowEditModal] = useState(false);
   const navi = useNavigate();
+  const [requestEvs, setRequestedEvs] = useState<Event[]>([]);
+  const [finishedEvs, setFinishededEvs] = useState<Event[]>([]);
+
+  useEffect(() => {
+    if (!user) return;
+    (async () => {
+      const evs = await getEvents(user._id);
+      setRequestedEvs(evs.filter((ev) => ev.process === EventProcess.WIP));
+      setFinishededEvs(evs.filter((ev) => ev.process === EventProcess.DONE));
+    })();
+  }, [user]);
 
   // NOTE: if there is no user info, then redirect to login page
 
@@ -32,25 +47,26 @@ const Profile = () => {
       let abx = user.rating / 2;
       for (let i = 0; i < 5; i++) {
         if (user.rating === 0) {
-          stars.push(<img src={"icons/star_g.svg"} />);
-          stars.push(<img src={"icons/star_g.svg"} />);
-          stars.push(<img src={"icons/star_g.svg"} />);
-          stars.push(<img src={"icons/star_g.svg"} />);
-          stars.push(<img src={"icons/star_g.svg"} />);
+          stars.push(<img src={"icons/star_g.svg"} key={`star-0`} />);
+          stars.push(<img src={"icons/star_g.svg"} key={`star-1`} />);
+          stars.push(<img src={"icons/star_g.svg"} key={`star-2`} />);
+          stars.push(<img src={"icons/star_g.svg"} key={`star-3`} />);
+          stars.push(<img src={"icons/star_g.svg"} key={`star-4`} />);
           break;
         } else if (abx > 0 && abx < 1) {
-          stars.push(<img src={"icons/star_h.svg"} />);
+          stars.push(<img src={"icons/star_h.svg"} key={`star-${i}`} />);
           abx -= 0.5;
         } else if (abx === 0) {
-          stars.push(<img src={"icons/star_g.svg"} />);
+          stars.push(<img src={"icons/star_g.svg"} key={`star-${i}`} />);
         } else {
-          stars.push(<img src={"icons/star_f.svg"} />);
+          stars.push(<img src={"icons/star_f.svg"} key={`star-${i}`} />);
           abx -= 1;
         }
       }
     }
     return stars;
   };
+
   if (!hasUserLoggedIn) {
     return <Bingle />;
   }
@@ -151,6 +167,14 @@ const Profile = () => {
                   }}
                 >
                   {getStars()}
+                  <Typography
+                    color={"#7149C6"}
+                    display={"flex"}
+                    fontSize={23}
+                    fontWeight={700}
+                  >
+                    &nbsp; {user ? user.rating : "0"}
+                  </Typography>
                 </Box>
               </Box>
             </Box>
@@ -168,27 +192,30 @@ const Profile = () => {
             </Box>
           </Box>
         </Grid>
-        <Grid display={"flex"} width={"70vw"} mt={10} justifyContent={"center"}>
+        <Box width={"70vw"} mt={10}>
           <Box
             display={"flex"}
             height={"100%"}
             alignItems={"center"}
-            width={"70%"}
             borderRadius={"1rem"}
           >
             <Typography display={"flex"} fontSize={23} fontWeight={700}>
               Requested Events
             </Typography>
-            <Typography
-              color={"#7149C6"}
-              display={"flex"}
-              fontSize={23}
-              fontWeight={700}
-            >
-              &nbsp; {user ? user.rating : "0"}
-            </Typography>
           </Box>
-        </Grid>
+          <Box
+            sx={{
+              display: "flex",
+              width: "100%",
+              overflowX: "auto",
+              flexShrink: 0,
+            }}
+          >
+            {requestEvs.map((ev, idx) => {
+              return <EventCard {...ev} key={`rev-${idx}`} />;
+            })}
+          </Box>
+        </Box>
         <Grid display={"flex"} width={"70vw"} mt={10} justifyContent={"center"}>
           <Box
             display={"flex"}
@@ -200,6 +227,9 @@ const Profile = () => {
             <Typography display={"flex"} fontSize={23} fontWeight={700}>
               Participated Events
             </Typography>
+            {finishedEvs.map((ev, idx) => {
+              return <EventCard {...ev} key={`fev-${idx}`} />;
+            })}
           </Box>
         </Grid>
         <Grid
