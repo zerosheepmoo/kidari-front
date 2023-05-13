@@ -11,6 +11,7 @@ import AnimatedNumbers from "react-animated-numbers";
 import CreateEventModal from "../components/CreateEventModal";
 import { useNavigate } from "react-router-dom";
 import Bingle from "../components/Bingle";
+import { EventProcess } from "../consts/event-const";
 
 const Home = () => {
   const [events, setEvents] = useState<Event[]>();
@@ -65,6 +66,7 @@ const Home = () => {
     >
       {/* Event Modal That shows descriptions of the event */}
       <EventModal
+        userType={user ? user.type : 1}
         onClose={() => setShowEventModal(false)}
         open={showEventModal}
         event={selectedEvent ?? undefined}
@@ -163,7 +165,7 @@ const Home = () => {
             K
           </Typography>
         </Box>
-        {/* Start of Holding Event Section */}
+        {/* Start of Upcoming Events Section */}
         <Box
           display={"flex"}
           height={"auto"}
@@ -173,7 +175,7 @@ const Home = () => {
         >
           <Box display={"flex"} width={"100%"}>
             <Typography display={"flex"} fontWeight={400} fontSize={30}>
-              Holding Events
+              Upcoming Events
             </Typography>
           </Box>
           <Box
@@ -184,7 +186,103 @@ const Home = () => {
             sx={{ overFlowX: "100%" }}
           >
             {events ? (
-              events.map((e, idx) => {
+              // filtered events with process type Wrok in progoress
+              events
+                .filter((ev) => ev.process === EventProcess.WIP)
+                .map((e, idx) => {
+                  return (
+                    <Box
+                      display={"flex"}
+                      height={400}
+                      width={250}
+                      flexDirection={"column"}
+                      key={`event_${idx}`}
+                      mr={2}
+                      onClick={() => {
+                        setShowEventModal(true);
+                        setSelectedEvent(e);
+                      }}
+                    >
+                      <Box
+                        display={"flex"}
+                        height={200}
+                        width={"100%"}
+                        sx={{
+                          borderRadius: "5px 5px 0 0 ",
+                          border: "solid 1px #E5E8EB",
+                          borderBottom: 0,
+                        }}
+                      >
+                        <img
+                          width={"100%"}
+                          src={
+                            e.thumbnail ? e.thumbnail : "/images/baking.webp"
+                          }
+                          style={{
+                            borderRadius: "5px 5px 0 0",
+                            objectFit: "cover",
+                          }}
+                        />
+                      </Box>
+                      <Box
+                        display={"flex"}
+                        height={130}
+                        width={"100%"}
+                        sx={{
+                          borderRadius: "0 0 5px 5px",
+                          border: "solid 1px #E5E8EB",
+                          borderTop: "",
+                          flexDirection: "column",
+                          p: 2,
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Typography display={"flex"}>{e.deadline}</Typography>
+                        <Typography
+                          display={"flex"}
+                          sx={{
+                            fontSize: 23,
+                            fontWeight: 600,
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            maxWidth: "100%",
+                          }}
+                        >
+                          {e.title}
+                        </Typography>
+                        <Box display={"flex"} justifyContent={"flex-end"}>
+                          <Typography display={"flex"} fontSize={13}>
+                            ~ {e.deadline}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </Box>
+                  );
+                })
+            ) : (
+              <></>
+            )}
+          </Box>
+        </Box>
+        {/* Held Event Section */}
+        <Box display={"flex"} height={"auto"} width={"100%"}>
+          <Typography fontWeight={400} fontSize={30}>
+            Held Events
+          </Typography>
+        </Box>
+        <Box
+          display={"flex"}
+          width={"100%"}
+          flexWrap={"wrap"}
+          mt={4}
+          sx={{ overFlowX: "100%" }}
+        >
+          {events ? (
+            // filtered events with process type DONE
+            events
+              .filter((ev) => ev.process === EventProcess.DONE)
+              .map((e, idx) => {
                 return (
                   <Box
                     display={"flex"}
@@ -253,109 +351,41 @@ const Home = () => {
                   </Box>
                 );
               })
-            ) : (
-              <></>
-            )}
-          </Box>
-        </Box>
-        {/* Held Event Section */}
-        <Box display={"flex"} height={"auto"} width={"100%"}>
-          <Typography fontWeight={400} fontSize={30}>
-            Held Events
-          </Typography>
-        </Box>
-        <Box
-          display={"flex"}
-          width={"100%"}
-          flexWrap={"wrap"}
-          mt={4}
-          sx={{ overFlowX: "100%" }}
-        >
-          {events ? (
-            events.map((e, idx) => {
-              return (
-                <Box
-                  display={"flex"}
-                  height={400}
-                  width={250}
-                  flexDirection={"column"}
-                  key={`event_${idx}`}
-                  mr={2}
-                  onClick={() => {
-                    setShowEventModal(true);
-                    setSelectedEvent(e);
-                  }}
-                >
-                  <Box
-                    display={"flex"}
-                    height={200}
-                    width={"100%"}
-                    sx={{
-                      borderRadius: "5px 5px 0 0 ",
-                      border: "solid 1px #E5E8EB",
-                      borderBottom: 0,
-                    }}
-                  >
-                    <img
-                      width={"100%"}
-                      src={e.thumbnail ? e.thumbnail : "/images/baking.webp"}
-                      style={{
-                        borderRadius: "5px 5px 0 0",
-                        objectFit: "cover",
-                      }}
-                    />
-                  </Box>
-                  <Box
-                    display={"flex"}
-                    height={130}
-                    width={"100%"}
-                    sx={{
-                      borderRadius: "0 0 5px 5px",
-                      border: "solid 1px #E5E8EB",
-                      borderTop: "",
-                      flexDirection: "column",
-                      p: 2,
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Typography display={"flex"}>{e.deadline}</Typography>
-                    <Typography
-                      display={"flex"}
-                      sx={{
-                        fontSize: 23,
-                        fontWeight: 600,
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        maxWidth: "100%",
-                      }}
-                    >
-                      {e.title}
-                    </Typography>
-                    <Box display={"flex"} justifyContent={"flex-end"}>
-                      <Typography display={"flex"} fontSize={13}>
-                        ~ {e.deadline}
-                      </Typography>
-                    </Box>
-                  </Box>
-                </Box>
-              );
-            })
           ) : (
             <></>
           )}
         </Box>
       </Grid>
       {/* Fab button that opens create event modal */}
-      <Box sx={{ position: "fixed", right: 40, bottom: 40 }}>
-        <Fab
-          color="primary"
-          aria-label="add"
-          onClick={() => setCreateEventModal(true)}
-        >
-          <Add />
-        </Fab>
-      </Box>
+      {user ? (
+        user.type === 1 ? (
+          <></>
+        ) : (
+          <Box sx={{ position: "fixed", right: 40, bottom: 40 }}>
+            <Fab
+              color="primary"
+              aria-label="add"
+              onClick={() => {
+                setCreateEventModal(true);
+              }}
+            >
+              <Add />
+            </Fab>
+          </Box>
+        )
+      ) : (
+        <Box sx={{ position: "fixed", right: 40, bottom: 40 }}>
+          <Fab
+            color="primary"
+            aria-label="add"
+            onClick={() => {
+              setCreateEventModal(true);
+            }}
+          >
+            <Add />
+          </Fab>
+        </Box>
+      )}
     </Grid>
   );
 };

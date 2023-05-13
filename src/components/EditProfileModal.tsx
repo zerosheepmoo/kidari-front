@@ -111,7 +111,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
             setType(Number(e.target.value));
           }}
         >
-          <MenuItem value={UserType.LEARNER}>Taker</MenuItem>
+          <MenuItem value={UserType.LEARNER}>Learner</MenuItem>
           <MenuItem value={UserType.GIVER}>Giver</MenuItem>
         </Select>
       </Box>

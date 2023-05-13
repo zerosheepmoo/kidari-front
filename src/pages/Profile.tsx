@@ -9,15 +9,22 @@ import { getEvents } from "../apis/event";
 import { EventProcess } from "../consts/event-const";
 import { Event } from "../interfaces/event-api";
 import EventCard from "../components/EventCard";
+import { UserType } from "../consts/user-const";
+import EventModal from "../components/EventModal";
+import MyEventModal from "../components/MyEventModal";
 
 const Profile = () => {
   const user = useAtomValue(userAtom);
   const hasUserLoggedIn = useAtomValue(userLoggedInCheckedAtom);
 
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showEventModal, setShowEventModal] = useState(false);
   const navi = useNavigate();
+  const [draftEvs, setDraftEvs] = useState<Event[]>([]);
   const [requestEvs, setRequestedEvs] = useState<Event[]>([]);
   const [finishedEvs, setFinishededEvs] = useState<Event[]>([]);
+
+  const [selectedEvent, setSelectedEvent] = useState<Event>();
 
   useEffect(() => {
     if (!user) return;
@@ -25,6 +32,7 @@ const Profile = () => {
       const evs = await getEvents(user._id);
       setRequestedEvs(evs.filter((ev) => ev.process === EventProcess.WIP));
       setFinishededEvs(evs.filter((ev) => ev.process === EventProcess.DONE));
+      setDraftEvs(evs);
     })();
   }, [user]);
 
@@ -44,7 +52,8 @@ const Profile = () => {
   //   This gets the rating of the user and then provides image of the rating based on it
   const getStars = () => {
     if (user) {
-      let abx = user.rating / 2;
+      let abx = user.rating;
+      abx = Math.ceil(abx) - 0.5;
       for (let i = 0; i < 5; i++) {
         if (user.rating === 0) {
           stars.push(<img src={"icons/star_g.svg"} key={`star-0`} />);
@@ -86,6 +95,11 @@ const Profile = () => {
       <EditProfileModal
         onClose={() => setShowEditModal(false)}
         open={showEditModal}
+      />
+      <MyEventModal
+        onClose={() => setShowEventModal(false)}
+        open={showEventModal}
+        OID={selectedEvent ? selectedEvent._id : ""}
       />
       <Grid
         item
@@ -141,7 +155,7 @@ const Profile = () => {
                   sx={{ alignItems: "flex-end", justifyContent: "flex-start" }}
                 >
                   <Typography fontSize={20} color={"black"}>
-                    {user ? (user.type == 1 ? "Learner" : "") : ""}
+                    {user ? (user.type == 1 ? "Learner" : "Giver") : ""}
                   </Typography>
                 </Box>
                 <Box
@@ -192,6 +206,41 @@ const Profile = () => {
             </Box>
           </Box>
         </Grid>
+        {user?.type === UserType.GIVER && (
+          <Box width={"70vw"} mt={10}>
+            <Box
+              display={"flex"}
+              height={"100%"}
+              alignItems={"center"}
+              borderRadius={"1rem"}
+            >
+              <Typography display={"flex"} fontSize={23} fontWeight={700}>
+                My Event
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                width: "100%",
+                overflowX: "auto",
+                flexShrink: 0,
+              }}
+            >
+              {draftEvs.map((ev, idx) => {
+                return (
+                  <EventCard
+                    onClick={() => {
+                      setSelectedEvent(ev);
+                      setShowEventModal(true);
+                    }}
+                    {...ev}
+                    key={`rev-${idx}`}
+                  />
+                );
+              })}
+            </Box>
+          </Box>
+        )}
         <Box width={"70vw"} mt={10}>
           <Box
             display={"flex"}

@@ -22,6 +22,7 @@ const EventCard: React.FC<EventCardProps> = ({
       height={400}
       width={250}
       minWidth={250}
+      maxWidth={250}
       flexDirection={"column"}
       mr={2}
       onClick={onClick}

@@ -42,10 +42,10 @@ const CreateEventModal: React.FC<CreateEventModalProps> = ({
 
   const uploadS3File = async (
     file: File | null,
-    storeOID: string,
+    OID: string,
     filename?: string
   ) => {
-    if (!file || !storeOID) return;
+    if (!file || !OID) return;
     const formData = new FormData();
     let fn = file.name;
     if (filename) {
@@ -54,7 +54,7 @@ const CreateEventModal: React.FC<CreateEventModalProps> = ({
       fn = `${filename}.${ext}`;
     }
     formData.append("oneFile", file, fn);
-    const res = await uploadOneFileToS3(formData, storeOID);
+    const res = await uploadOneFileToS3(formData, OID);
     return res;
   };
 
@@ -82,6 +82,7 @@ const CreateEventModal: React.FC<CreateEventModalProps> = ({
       return;
 
     const aws = await uploadS3File(selectedImage, user._id);
+    console.log(aws, "hey");
 
     const newEvent: RequestPostDraftEvent = {
       title: title,

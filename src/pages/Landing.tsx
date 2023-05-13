@@ -64,7 +64,7 @@ const Landing = () => {
                 pt: 3,
               }}
             >
-              {"Ask for help, because together we can"}
+              {'"Fuel the Fire of Youth Potential"'}
             </Typography>
           </Fade>
           {/* Button Section that leads to the login path */}
@@ -74,7 +74,7 @@ const Landing = () => {
               sx={{ width: "fit-content", p: 3, mt: 7 }}
               href={"/login"}
             >
-              <Typography variant="f18B">Request & Support Here</Typography>
+              <Typography variant="f18B">Fuel here</Typography>
             </Button>
           </Fade>
         </Box>

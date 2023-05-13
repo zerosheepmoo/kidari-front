@@ -1,4 +1,5 @@
 import React, { Box, Grid, Typography } from "@mui/material";
+import AnimatedNumbers from "react-animated-numbers";
 
 const About = () => {
   return (
@@ -88,7 +89,17 @@ const About = () => {
                   fontSize={50}
                   fontWeight={800}
                 >
-                  4
+                  <AnimatedNumbers
+                    animateToNumber={4}
+                    configs={[
+                      { mass: 1, tension: 220, friction: 100 },
+                      { mass: 1, tension: 180, friction: 130 },
+                      { mass: 1, tension: 280, friction: 90 },
+                      { mass: 1, tension: 180, friction: 135 },
+                      { mass: 1, tension: 260, friction: 100 },
+                      { mass: 1, tension: 210, friction: 180 },
+                    ]}
+                  />
                 </Typography>
               </Box>
               <Box display={"flex"}>Employees</Box>
@@ -106,7 +117,17 @@ const About = () => {
                   fontSize={50}
                   fontWeight={800}
                 >
-                  14
+                  <AnimatedNumbers
+                    animateToNumber={14}
+                    configs={[
+                      { mass: 1, tension: 220, friction: 100 },
+                      { mass: 1, tension: 180, friction: 130 },
+                      { mass: 1, tension: 280, friction: 90 },
+                      { mass: 1, tension: 180, friction: 135 },
+                      { mass: 1, tension: 260, friction: 100 },
+                      { mass: 1, tension: 210, friction: 180 },
+                    ]}
+                  />
                 </Typography>
               </Box>
               <Box display={"flex"}>Employees</Box>
@@ -124,7 +145,17 @@ const About = () => {
                   fontSize={50}
                   fontWeight={800}
                 >
-                  2023
+                  <AnimatedNumbers
+                    animateToNumber={2023}
+                    configs={[
+                      { mass: 1, tension: 220, friction: 100 },
+                      { mass: 1, tension: 180, friction: 130 },
+                      { mass: 1, tension: 280, friction: 90 },
+                      { mass: 1, tension: 180, friction: 135 },
+                      { mass: 1, tension: 260, friction: 100 },
+                      { mass: 1, tension: 210, friction: 180 },
+                    ]}
+                  />
                 </Typography>
               </Box>
               <Box display={"flex"}>Founded in Incheon </Box>
@@ -142,7 +173,25 @@ const About = () => {
                   fontSize={50}
                   fontWeight={800}
                 >
-                  10K+
+                  <AnimatedNumbers
+                    animateToNumber={10}
+                    configs={[
+                      { mass: 1, tension: 220, friction: 100 },
+                      { mass: 1, tension: 180, friction: 130 },
+                      { mass: 1, tension: 280, friction: 90 },
+                      { mass: 1, tension: 180, friction: 135 },
+                      { mass: 1, tension: 260, friction: 100 },
+                      { mass: 1, tension: 210, friction: 180 },
+                    ]}
+                  />
+                </Typography>
+                <Typography
+                  textAlign={"center"}
+                  color={"#7149C6"}
+                  fontSize={50}
+                  fontWeight={800}
+                >
+                  K+
                 </Typography>
               </Box>
               <Box display={"flex"}>Givers</Box>

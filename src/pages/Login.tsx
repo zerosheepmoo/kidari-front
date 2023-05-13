@@ -52,9 +52,12 @@ const Login = () => {
       position={"relative"}
       sx={{
         width: "100vw",
-        height: "100vh",
+        height: "100%",
         flexDirection: "column",
+        overflowY: "hidden",
+        justifyContent: "center",
       }}
+      mt={10}
     >
       {/* Create account modal section */}
       <CreateAccountModal

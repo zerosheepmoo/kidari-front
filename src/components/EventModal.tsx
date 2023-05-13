@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import BasicModal from "./BasicModal";
 import { useNavigate } from "react-router-dom";
 import { Event } from "../interfaces/event-api";
 import { toast } from "react-hot-toast";
+import { UserType } from "../consts/user-const";
+import { getEventComments } from "../apis/event-comment";
+import { EventComment } from "../interfaces/event-comment-api";
 
 export interface EventModalProps {
   open: boolean;
   onClose: () => void;
   denyCallback?: () => void;
   event: Event | undefined;
+  userType: UserType;
 }
 
 const EventModal: React.FC<EventModalProps> = ({
@@ -17,8 +21,28 @@ const EventModal: React.FC<EventModalProps> = ({
   onClose,
   denyCallback,
   event,
+  userType,
 }) => {
   const navi = useNavigate();
+  const [comments, setComments] = useState<EventComment[]>([]);
+
+  useEffect(() => {
+    getComments();
+  }, []);
+
+  const getComments = async () => {
+    try {
+      const x = await getEventComments(event ? event._id : "");
+      if (x) {
+        setComments(x);
+        console.log(x);
+      } else {
+        console.log("none");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const handleRequest = () => {
     toast.success("You have sucessfully requested");
@@ -66,8 +90,7 @@ const EventModal: React.FC<EventModalProps> = ({
           Deadline : {event ? event.holdingDate : ""}
         </Typography>
         <Typography fontSize={20} fontWeight={800} color={"#7149C6"}>
-          {" "}
-          20,000 Won
+          {event ? event.feeForPerson : "0"} Won
         </Typography>
       </Box>
       <Grid
@@ -141,6 +164,7 @@ const EventModal: React.FC<EventModalProps> = ({
       </Box>
       <Box display={"flex"} sx={{ width: "100%" }} justifyContent={"center"}>
         <Button
+          disabled={userType === 2 ? true : false}
           sx={{
             height: 50,
             backgroundColor: "#7149C6",
