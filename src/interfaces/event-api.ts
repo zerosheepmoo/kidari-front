@@ -22,6 +22,7 @@ export interface EventBase {
   process: EventProcess;
   registeredPeopleNumber: number;
   feeForPerson: number;
+  writer: string;
 }
 
 export interface Event extends MongoIDIncluding, EventBase, ResponseUserHasAT {
@@ -36,6 +37,7 @@ export interface RequestPostDraftEvent {
   peopleLimitNumber: string;
   deadline: string;
   holdingDate: string;
+  feeForPerson?: number;
 }
 
 /**
@@ -50,6 +52,7 @@ export interface RequestEditDraftEvent {
   peopleLimitNumber?: string;
   deadline?: string;
   holdingDate?: string;
+  feeForPerson?: number;
 }
 
 /**
