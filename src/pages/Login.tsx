@@ -192,9 +192,17 @@ const Login = () => {
                   sx={{ width: "100%", p: 2 }}
                   justifyContent={"center"}
                 >
-                  <Typography sx={{ pr: 1 }}>Are you new ?</Typography>
                   <Typography
-                    sx={{ textDecoration: "underline" }}
+                    sx={{ pr: 1, whiteSpace: "nowrap", cursor: "pointer" }}
+                  >
+                    Are you new ?
+                  </Typography>
+                  <Typography
+                    sx={{
+                      textDecoration: "underline",
+                      whiteSpace: "nowrap",
+                      cursor: "pointer",
+                    }}
                     onClick={() => setShowModal(true)}
                   >
                     Create new account

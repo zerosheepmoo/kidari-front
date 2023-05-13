@@ -12,6 +12,7 @@ import EventCard from "../components/EventCard";
 import { UserType } from "../consts/user-const";
 import EventModal from "../components/EventModal";
 import MyEventModal from "../components/MyEventModal";
+import { userSignOut } from "../apis/user";
 
 const Profile = () => {
   const user = useAtomValue(userAtom);
@@ -131,7 +132,7 @@ const Profile = () => {
             border={"solid 1px #E5E8EB"}
             borderRadius={"1rem"}
             flexWrap={"wrap"}
-            p={10}
+            p={5}
           >
             {/* profileSection */}
             <Box display={"flex"}>
@@ -209,8 +210,15 @@ const Profile = () => {
                   Edit Profile
                 </Typography>
               </Button>
-              <Button variant="contained" sx={{ m: 1 }}>
-                <Typography variant="f18B">Verify</Typography>
+              <Button
+                variant="outlined"
+                sx={{ m: 1 }}
+                onClick={async () => {
+                  await userSignOut();
+                  window.location.reload();
+                }}
+              >
+                <Typography variant="f18B">Logout</Typography>
               </Button>
             </Box>
           </Box>

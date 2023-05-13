@@ -9,8 +9,10 @@ import {
 } from "@mui/material";
 import BasicModal from "./BasicModal";
 import { UserType } from "../consts/user-const";
-import { userSignUp } from "../apis/user";
+import { userSignIn, userSignUp } from "../apis/user";
 import { useNavigate } from "react-router-dom";
+import { useSetAtom } from "jotai";
+import { userAtom } from "../jotais";
 
 export interface CreateAccountModalProps {
   open: boolean;
@@ -30,6 +32,7 @@ const CreateAccountModal: React.FC<CreateAccountModalProps> = ({
   const [name, setName] = useState("");
   const [type, setType] = useState(2);
   const [phone, setPhone] = useState("");
+  const setUser = useSetAtom(userAtom);
 
   const handleCreateAccont = async () => {
     if (!(email && password && name && checkPassword && type && phone)) return;
@@ -45,8 +48,10 @@ const CreateAccountModal: React.FC<CreateAccountModalProps> = ({
     });
     if (newUser) {
       console.log("user Created", newUser);
-      navi("/login");
+      const u = await userSignIn({ email, password });
       onClose();
+      setUser(() => u);
+      navi("/home");
     } else {
       console.log("Something Went Wrong", newUser);
     }

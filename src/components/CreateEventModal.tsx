@@ -1,15 +1,6 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  MenuItem,
-  Select,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import BasicModal from "./BasicModal";
-import { UserType } from "../consts/user-const";
-import { userSignUp } from "../apis/user";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { postEventDraft } from "../apis/event";
