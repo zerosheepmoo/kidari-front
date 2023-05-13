@@ -66,7 +66,7 @@ const Home = () => {
     >
       {/* Event Modal That shows descriptions of the event */}
       <EventModal
-        userType={user ? user.type : 1}
+        user={user ? user : undefined}
         onClose={() => setShowEventModal(false)}
         open={showEventModal}
         event={selectedEvent ?? undefined}

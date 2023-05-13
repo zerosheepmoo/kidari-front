@@ -7,7 +7,7 @@ import {
 } from "../interfaces/event-comment-api";
 
 export const getEventComments = async (eventOID: string) => {
-  const query = `v1/event/${eventOID}/comments`;
+  const query = `v1/events/${eventOID}/comments`;
   const body = await apiInstance.get(query).json<EventComment[]>();
   return body;
 };
@@ -16,7 +16,7 @@ export const postEventComment = async (
   eventOID: string,
   creating: RequestPostEventComment
 ) => {
-  const query = `v1/event/${eventOID}/comments`;
+  const query = `v1/events/${eventOID}/comments`;
   const ho = getHeaderOption();
   if (!ho) return; // case that access token removed
   const body = await apiInstance
@@ -31,7 +31,7 @@ export const patchEventComment = async (
   eventCommentOID: string,
   patching: RequestPatchEventComment
 ) => {
-  const query = `v1/event/${eventOID}/comments/${eventCommentOID}`;
+  const query = `v1/events/${eventOID}/comments/${eventCommentOID}`;
   const ho = getHeaderOption();
   if (!ho) return; // case that access token removed
   const body = await apiInstance
@@ -45,7 +45,7 @@ export const deleteEventComment = async (
   eventOID: string,
   eventCommentOID: string
 ) => {
-  const query = `v1/event/${eventOID}/comments/${eventCommentOID}`;
+  const query = `v1/events/${eventOID}/comments/${eventCommentOID}`;
   const ho = getHeaderOption();
   if (!ho) return; // case that access token removed
   const body = await apiInstance.delete(query, { ...ho }).json<EventComment>();

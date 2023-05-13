@@ -191,18 +191,18 @@ const CreateEventModal: React.FC<CreateEventModalProps> = ({
         <TextField
           sx={{ width: "100%" }}
           value={deadline}
-          placeholder="YYYY/MM/DD"
+          placeholder="YYYY-MM-DD"
           onChange={(e) => setDeadline(e.target.value)}
         />
       </Box>
       <Box display={"flex"} width={"100%"} pt={1}>
-        <Typography>Holding Date</Typography>
+        <Typography>Event Date</Typography>
       </Box>
       <Box display={"flex"} justifyContent={"center"} width={"100%"} pt={1}>
         <TextField
           sx={{ width: "100%" }}
           value={holdingDate}
-          placeholder="YYYY/MM/DD"
+          placeholder="YYYY-MM-DD"
           onChange={(e) => setHoldingDate(e.target.value)}
         />
       </Box>

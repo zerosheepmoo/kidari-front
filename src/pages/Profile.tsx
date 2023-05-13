@@ -187,7 +187,10 @@ const Profile = () => {
                     fontSize={23}
                     fontWeight={700}
                   >
-                    &nbsp; {user ? user.rating : "0"}
+                    &nbsp;{" "}
+                    {user
+                      ? parseFloat(String(user.rating)).toFixed(2) + " Rating"
+                      : "0"}
                   </Typography>
                 </Box>
               </Box>

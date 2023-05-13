@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import BasicModal from "./BasicModal";
 import { useNavigate } from "react-router-dom";
 import { Event } from "../interfaces/event-api";
 import { toast } from "react-hot-toast";
 import { UserType } from "../consts/user-const";
-import { getEventComments } from "../apis/event-comment";
+import { getEventComments, postEventComment } from "../apis/event-comment";
 import { EventComment } from "../interfaces/event-comment-api";
+import { User } from "../interfaces/user-api";
+import { registerEvent } from "../apis/event";
 
 export interface EventModalProps {
   open: boolean;
   onClose: () => void;
   denyCallback?: () => void;
   event: Event | undefined;
-  userType: UserType;
+  user: User | undefined;
 }
 
 const EventModal: React.FC<EventModalProps> = ({
@@ -21,32 +23,66 @@ const EventModal: React.FC<EventModalProps> = ({
   onClose,
   denyCallback,
   event,
-  userType,
+  user,
 }) => {
   const navi = useNavigate();
   const [comments, setComments] = useState<EventComment[]>([]);
+  const [comment, setComment] = useState("");
+
+  const [canComment, setCanComment] = useState(false);
 
   useEffect(() => {
-    getComments();
-  }, []);
-
-  const getComments = async () => {
-    try {
-      const x = await getEventComments(event ? event._id : "");
-      if (x) {
-        setComments(x);
-        console.log(x);
-      } else {
-        console.log("none");
+    (async () => {
+      if (event) {
+        try {
+          const x = await getEventComments(event._id);
+          if (x) {
+            setComments(x);
+            console.log(x);
+            if (checkValidForComment()) {
+              setCanComment(true);
+            }
+          } else {
+            console.log("none");
+          }
+        } catch (e) {
+          console.log(e);
+        }
       }
+    })();
+  }, [event]);
+
+  const handleSendComment = async () => {
+    if (!(event && user)) return;
+    try {
+      const x = await postEventComment(event._id, { content: comment });
+      toast.success("You have sucessfully commented");
+      onClose();
     } catch (e) {
       console.log(e);
     }
   };
 
-  const handleRequest = () => {
+  const handleRequest = async () => {
+    if (!(user && event)) return;
+    try {
+      const x = await registerEvent(event._id);
+      console.log("Request Sent", x);
+    } catch (e) {
+      console.log(e);
+    }
     toast.success("You have sucessfully requested");
     onClose();
+  };
+
+  const checkValidForComment = () => {
+    console.log("insode");
+    if (event && user) {
+      const x = event.registered.includes(user._id);
+      console.log(event.registered, x);
+      return x;
+    }
+    return false;
   };
 
   return (
@@ -90,7 +126,7 @@ const EventModal: React.FC<EventModalProps> = ({
           Deadline : {event ? event.holdingDate : ""}
         </Typography>
         <Typography fontSize={20} fontWeight={800} color={"#7149C6"}>
-          {event ? event.feeForPerson : "0"} Won
+          {event ? Number(event.feeForPerson).toLocaleString() : "0"} Won
         </Typography>
       </Box>
       <Grid
@@ -109,9 +145,9 @@ const EventModal: React.FC<EventModalProps> = ({
           justifyContent={"space-between"}
           width={"100%"}
           border={"solid 1px #E5E8EB"}
-          borderRadius={"1rem"}
+          borderRadius={2}
           flexDirection={"row"}
-          p={5}
+          p={3}
         >
           <Box display={"flex"}>
             <Box
@@ -135,9 +171,9 @@ const EventModal: React.FC<EventModalProps> = ({
               display={"flex"}
               color="black"
               height={"100%"}
-              sx={{ alignItems: "flex-end", justifyContent: "flex-start" }}
+              sx={{ alignItems: "flex-end", justifyContent: "flex-end" }}
             >
-              <Typography fontSize={20} color={"black"}>
+              <Typography fontSize={15} color={"black"}>
                 Registered {event ? event.registeredPeopleNumber : ""}
               </Typography>
             </Box>
@@ -145,13 +181,10 @@ const EventModal: React.FC<EventModalProps> = ({
               display={"flex"}
               color="black"
               height={"100%"}
-              sx={{
-                alignItems: "flex-start",
-                justifyContent: "flex-start",
-              }}
+              sx={{ alignItems: "flex-end", justifyContent: "flex-end" }}
             >
-              <Typography fontSize={25} color={"black"} fontWeight={800}>
-                Pending {event ? event.process : ""}
+              <Typography fontSize={15} color={"black"}>
+                Limit {event ? event.peopleLimitNumber : ""}
               </Typography>
             </Box>
           </Box>
@@ -159,12 +192,122 @@ const EventModal: React.FC<EventModalProps> = ({
       </Grid>
       <Box display={"flex"}>
         <Typography fontWeight={700} pt={2}>
-          Reviews
+          Comments
         </Typography>
       </Box>
+      {comments ? (
+        comments.map((e, idx) => {
+          return (
+            <Grid
+              display={"flex"}
+              width={"100%"}
+              height={"auto"}
+              sx={{ flexDirection: "row" }}
+              justifyContent={"center"}
+              alignItems={"center"}
+              mt={2}
+              key={`event_held_${idx}`}
+            >
+              <Box
+                display={"flex"}
+                height={"100%"}
+                alignItems={"center"}
+                width={"100%"}
+                border={"solid 1px #E5E8EB"}
+                borderRadius={"1rem"}
+                flexDirection={"row"}
+                p={2}
+              >
+                <Box display={"flex"}>
+                  <Box
+                    display={"flex"}
+                    sx={{
+                      border: "solid 1px #A9A9A9",
+                      borderRadius: "5rem",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      p: 1,
+                    }}
+                  >
+                    <img
+                      src={
+                        event ? "/icons/profile_d.png" : "/icons/profile_d.png"
+                      }
+                      style={{ width: 30, height: 30 }}
+                    />
+                  </Box>
+                </Box>
+                <Box display={"flex"} flexDirection={"column"} pl={5}>
+                  <Box
+                    display={"flex"}
+                    color="black"
+                    height={"100%"}
+                    sx={{
+                      alignItems: "flex-end",
+                      justifyContent: "flex-start",
+                    }}
+                  >
+                    <Typography fontSize={15} color={"black"}>
+                      {e.name}
+                    </Typography>
+                  </Box>
+                  <Box
+                    display={"flex"}
+                    color="black"
+                    height={"100%"}
+                    sx={{
+                      alignItems: "flex-start",
+                      justifyContent: "flex-start",
+                    }}
+                  >
+                    <Typography fontSize={19} color={"black"} fontWeight={800}>
+                      {e.content}
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
+            </Grid>
+          );
+        })
+      ) : (
+        <> </>
+      )}
+      <>
+        {canComment === true ? (
+          <Box display={"flex"} justifyContent={"center"} width={"100%"} pt={3}>
+            <TextField
+              sx={{ width: "80%" }}
+              value={comment}
+              multiline
+              maxRows={4}
+              onChange={(e) => setComment(e.target.value)}
+            />
+            <Box display={"flex"} sx={{ width: "20%" }}>
+              <Button
+                sx={{
+                  height: "100%",
+                  backgroundColor: "#7149C6",
+                  width: "100%",
+                  color: "white",
+                  ml: 2,
+                  "&:hover": {
+                    backgroundColor: "#7149C6",
+                  },
+                }}
+                onClick={() => handleSendComment()}
+              >
+                Send
+              </Button>
+            </Box>
+          </Box>
+        ) : (
+          <></>
+        )}
+      </>
+
       <Box display={"flex"} sx={{ width: "100%" }} justifyContent={"center"}>
         <Button
-          disabled={userType === 2 ? true : false}
+          disabled={user ? (user.type === 2 ? true : false) : false}
           sx={{
             height: 50,
             backgroundColor: "#7149C6",
@@ -173,6 +316,9 @@ const EventModal: React.FC<EventModalProps> = ({
             mt: 4,
             "&:hover": {
               backgroundColor: "#7149C6",
+            },
+            "&:disabled": {
+              backgroundColor: "grey",
             },
           }}
           onClick={() => handleRequest()}
