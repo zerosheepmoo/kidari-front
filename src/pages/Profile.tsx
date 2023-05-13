@@ -127,10 +127,13 @@ const Profile = () => {
             alignItems={"center"}
             justifyContent={"space-between"}
             width={"70%"}
+            minWidth={800}
             border={"solid 1px #E5E8EB"}
             borderRadius={"1rem"}
+            flexWrap={"wrap"}
             p={10}
           >
+            {/* profileSection */}
             <Box display={"flex"}>
               <Box
                 display={"flex"}
@@ -195,13 +198,16 @@ const Profile = () => {
                 </Box>
               </Box>
             </Box>
+            {/* button section in profile */}
             <Box display={"flex"} flexDirection={"column"}>
               <Button
                 variant="contained"
                 sx={{ m: 1 }}
                 onClick={() => setShowEditModal(true)}
               >
-                <Typography variant="f18B">Edit Profile</Typography>
+                <Typography variant="f18B" sx={{ whiteSpace: "nowrap" }}>
+                  Edit Profile
+                </Typography>
               </Button>
               <Button variant="contained" sx={{ m: 1 }}>
                 <Typography variant="f18B">Verify</Typography>
