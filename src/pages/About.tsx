@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material";
+import React, { Box, Grid, Typography } from "@mui/material";
 
 const About = () => {
   return (

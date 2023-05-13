@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Dialog,
   DialogProps,
@@ -5,7 +6,6 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import React from "react";
 import ForwardedSlideUpTransition from "./transition/ForwardedSlideUpTransition";
 
 import { Close } from "@mui/icons-material";

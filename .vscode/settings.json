@@ -41,6 +41,5 @@
         "editor.formatOnSave": true,
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "reactSnippets.settings.importReactOnTop": false
 
 }
